@@ -15,18 +15,31 @@ import com.quellus.Enemy;
 
 public class BasicLibgdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture playerImage;
 	Texture enemyImage;
-	Player playerObj = new Player();
+	Texture mapImage;
 	ArrayList<Enemy> enemies;
+
+	private int[][] map = {
+		{0,14},
+		{10,14},
+		{10,11},
+		{4,11},
+		{4,8},
+		{12,8},
+		{12,5},
+		{7,5},
+		{7,0}
+	};
+
+	private float textureScale = 4.21874f;
 	
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		playerImage = new Texture("player.png");
+		mapImage = new Texture("basic-map.png");
 		enemyImage = new Texture("enemy.png");
 		enemies = new ArrayList<Enemy>();
-		enemies.add(new Enemy(1080, 100));
+		enemies.add(new Enemy(map));
 	}
 
 	@Override
@@ -34,7 +47,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		moveAndDrawPlayer();
+		batch.draw(mapImage, 0, 0, 256 * textureScale, 256 * textureScale);
 		moveAndDrawEnemies();
 		batch.end();
 	}
@@ -42,7 +55,6 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		batch.dispose();
-		playerImage.dispose();
 	}
 
 	public int getRotation() {
@@ -58,23 +70,13 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		return -1;
 	}
 
-	public void moveAndDrawPlayer() {
-		Sprite playerSprite = new Sprite(playerImage, 16, 16);
-		playerSprite.setPosition(playerObj.getLocationX(), playerObj.getLocationY());
-		int rotation = getRotation();
-		if (rotation != -1) {
-			playerObj.setRotation(rotation);
-		}
-		playerSprite.setRotation(playerObj.getRotation());
-		playerObj.move();
-		playerSprite.draw(batch);
-	}
-
 	public void moveAndDrawEnemies() {
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemyObj = enemies.get(i);
 			Sprite enemySprite = new Sprite(enemyImage, 16, 16);
-			enemySprite.setPosition(enemyObj.getLocationX(), enemyObj.getLocationY());
+			enemySprite.setCenter(4, 4);
+			enemySprite.setScale(textureScale);
+			enemySprite.setPosition(enemyObj.getLocationX() * 67.5f, enemyObj.getLocationY() *  67.5f);
 			enemySprite.setRotation(enemyObj.getRotation());
 			enemyObj.move();
 			enemySprite.draw(batch);
