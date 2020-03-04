@@ -10,14 +10,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-import com.quellus.Player;
 import com.quellus.Enemy;
+import com.quellus.Tower;
 
 public class BasicLibgdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture enemyImage;
 	Texture mapImage;
+	Texture towerImage;
 	ArrayList<Enemy> enemies;
+	Tower towerObj;
+	int screenSizeY;
 
 	private int[][] map = {
 		{0,14},
@@ -31,15 +34,24 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		{7,0}
 	};
 
-	private float textureScale = 4.21874f;
+	private float textureScale;
+	private float locationScale;
+	private float locationOffset;
 	
 	@Override
 	public void create() {
+		screenSizeY = Gdx.graphics.getHeight();
+		textureScale = screenSizeY / 256f;
+		locationScale = screenSizeY / 16f;
+		locationOffset = 25;
+		System.out.println(locationScale);
 		batch = new SpriteBatch();
 		mapImage = new Texture("basic-map.png");
 		enemyImage = new Texture("enemy.png");
+		towerImage = new Texture("basic-tower.png");
 		enemies = new ArrayList<Enemy>();
 		enemies.add(new Enemy(map));
+		towerObj = new Tower();
 	}
 
 	@Override
@@ -49,6 +61,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(mapImage, 0, 0, 256 * textureScale, 256 * textureScale);
 		moveAndDrawEnemies();
+		rotateAndDrawTowers();
 		batch.end();
 	}
 	
@@ -73,14 +86,26 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 	public void moveAndDrawEnemies() {
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemyObj = enemies.get(i);
-			Sprite enemySprite = new Sprite(enemyImage, 16, 16);
-			enemySprite.setCenter(4, 4);
-			enemySprite.setScale(textureScale);
-			enemySprite.setPosition(enemyObj.getLocationX() * 67.5f, enemyObj.getLocationY() *  67.5f);
-			enemySprite.setRotation(enemyObj.getRotation());
-			enemyObj.move();
-			enemySprite.draw(batch);
+			if (enemyObj.getHealth() > 0) {
+				Sprite enemySprite = new Sprite(enemyImage, 16, 16);
+				enemySprite.setScale(textureScale);
+				enemySprite.setPosition(enemyObj.getLocationX() * locationScale + locationOffset, enemyObj.getLocationY() *  locationScale + locationOffset);
+				enemySprite.setRotation(enemyObj.getRotation());
+				enemyObj.move();
+				enemySprite.draw(batch);
+			}
 		}
 	}
+
+	public void rotateAndDrawTowers() {
+		towerObj.rotate(enemies);
+		towerObj.attack(enemies);
+		Sprite towerSprite = new Sprite(towerImage, 16, 16);
+		towerSprite.setScale(textureScale);
+		towerSprite.setPosition(towerObj.getLocationX() * locationScale + locationOffset, towerObj.getLocationY() *  locationScale + locationOffset);
+		towerSprite.setRotation(towerObj.getRotation());
+		towerSprite.draw(batch);
+	}
+
 }
 

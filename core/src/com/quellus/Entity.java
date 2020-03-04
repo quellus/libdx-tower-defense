@@ -6,10 +6,10 @@ public abstract class Entity {
 	final public int LEFT = 90;
 	final public int RIGHT = 270;
 
-	private int locationX = 0;
-	private int locationY = 0;
-	private int rotation = 0;
-	private int moveSpeed = 1;
+	protected float locationX = 0;
+	protected float locationY = 0;
+	protected int rotation = 0;
+	protected float moveSpeed = 1;
 
 	public int getRotation() {
 		return rotation;
@@ -19,7 +19,7 @@ public abstract class Entity {
 		this.rotation = rotation;
 	}
 
-	public int getLocationX() {
+	public float getLocationX() {
 		return locationX;
 	}
 
@@ -27,7 +27,7 @@ public abstract class Entity {
 		this.locationX = locationX;
 	}
 
-	public int getLocationY() {
+	public float getLocationY() {
 		return locationY;
 	}
 
@@ -35,25 +35,12 @@ public abstract class Entity {
 		this.locationY = locationY;
 	}
 
-	public int getMoveSpeed() {
+	public float getMoveSpeed() {
 		return moveSpeed;
 	}
 
 	public void setMoveSpeed(int moveSpeed) {
 		this.moveSpeed = moveSpeed;
 	}
-
-	public void move() {
-		if (getRotation() == UP) {
-			setLocationY(getLocationY() + getMoveSpeed());
-		} else if (getRotation() == DOWN) {
-			setLocationY(getLocationY() - getMoveSpeed());
-		} else if (getRotation() == RIGHT) {
-			setLocationX(getLocationX() + getMoveSpeed());
-		} else if (getRotation() == LEFT) {
-			setLocationX(getLocationX() - getMoveSpeed());
-		}
-	}
-
 }
 

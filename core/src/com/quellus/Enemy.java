@@ -2,25 +2,25 @@ package com.quellus;
 
 import java.lang.Math;
 
-public class Enemy {
+import com.quellus.Entity;
+
+public class Enemy extends Entity {
 	final public int UP = 0;
 	final public int DOWN = 180;
 	final public int LEFT = 90;
 	final public int RIGHT = 270;
 
-	private float locationX = 0;
-	private float locationY = 0;
-	private int rotation = 0;
-	private float moveSpeed = 0.1f;
 	private int[][] map;
 
 	private int lastWaypoint = 0;
+	
+	private int health = 100;
 
 	public Enemy(int[][] map) {
 		this.map = map;
+		moveSpeed = 0.05f;
 		locationX = map[0][0];
 		locationY = map[0][1];
-		System.out.println("Enemy starts at" + locationX + ", " + locationY);
 		setRotation(LEFT);
 	}
 
@@ -56,36 +56,25 @@ public class Enemy {
 		}
 	}
 
-	public int getRotation() {
-		return rotation;
-	}
-
-	public void setRotation(int rotation) {
-		this.rotation = rotation;
-	}
-
-	public float getLocationX() {
-		return locationX;
-	}
-
-	public void setLocationX(int locationX) {
-		this.locationX = locationX;
-	}
-
-	public float getLocationY() {
-		return locationY;
-	}
-
-	public void setLocationY(int locationY) {
-		this.locationY = locationY;
-	}
-
 	public float getMoveSpeed() {
 		return moveSpeed;
 	}
 
 	public void setMoveSpeed(int moveSpeed) {
 		this.moveSpeed = moveSpeed;
+	}
+	
+	public int getHealth() {
+		return health;
+	}
+
+	public void attack(int damage) {
+		if (health > 0) {
+			health -= damage;
+		} else {
+			System.out.println("This enemy is heaking DEAD!");
+		}
+		
 	}
 
 }
