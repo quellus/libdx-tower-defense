@@ -20,7 +20,7 @@ public class Tower extends Entity {
 		if (currentCooldown > 0) {
 			currentCooldown--;
 		}
-		if (currentCooldown == 0 && enemies.size() == 1) {
+		if (currentCooldown == 0 && enemies.size() >= 1) {
 			Enemy enemy = enemies.get(0);
 			enemy.attack(damage);
 			currentCooldown = cooldown;
@@ -28,7 +28,7 @@ public class Tower extends Entity {
 	}
 
 	public void rotate(ArrayList<Enemy> enemies) {
-		if (enemies.size() == 1) {
+		if (enemies.size() >= 1) {
 			Enemy enemy = enemies.get(0);
 			double diffX = locationX - enemy.getLocationX();
 			double diffY = locationY - enemy.getLocationY();

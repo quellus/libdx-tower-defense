@@ -30,7 +30,6 @@ public class Enemy extends Entity {
 				locationX = map[lastWaypoint][0];
 				locationY = map[lastWaypoint][1];
 				lastWaypoint++;
-				System.out.println("EnemyLocation" + locationX + ", " + locationY);
 			}
 
 			int targetX = map[lastWaypoint][0];
@@ -72,7 +71,7 @@ public class Enemy extends Entity {
 		if (health > 0) {
 			health -= damage;
 		} else {
-			System.out.println("This enemy is heaking DEAD!");
+			//TODO idk remove the enemy from the list somehow
 		}
 		
 	}

@@ -24,18 +24,6 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 	GameLogic gameLogic = new GameLogic(game);
 	int screenSizeY;
 
-	private int[][] map = {
-		{0,14},
-		{10,14},
-		{10,11},
-		{4,11},
-		{4,8},
-		{12,8},
-		{12,5},
-		{7,5},
-		{7,0}
-	};
-
 	private float textureScale;
 	private float locationScale;
 	private float locationOffset;

@@ -8,6 +8,8 @@ import com.quellus.Tower;
 
 public class GameLogic {
 	private Game game;
+	private int  enemySpawnRate = 30;
+	private int enemySpawn = enemySpawnRate;
 
 	public GameLogic(Game game) {
 		this.game = game;
@@ -18,7 +20,7 @@ public class GameLogic {
 	}
 	
 	public void update() {
-		//spawnEnemies();
+		spawnEnemy();
 		moveEnemies();
 		rotateTowers();
 	}
@@ -40,6 +42,15 @@ public class GameLogic {
 			Tower towerObj = towers.get(i);
 			towerObj.rotate(enemies);
 			towerObj.attack(enemies);
+		}
+	}
+
+	private void spawnEnemy() {
+		if (enemySpawn == 0) {
+			game.addEnemy(new Enemy(game.getMap()));
+			enemySpawn = enemySpawnRate;
+		} else {
+			enemySpawn--;
 		}
 	}
 
