@@ -3,6 +3,7 @@ package com.quellus;
 import java.util.ArrayList;
 
 import com.quellus.Game;
+import com.quellus.Entity;
 import com.quellus.Enemy;
 import com.quellus.Tower;
 
@@ -40,8 +41,9 @@ public class GameLogic {
 		ArrayList<Tower> towers = game.getTowers();
 		for (int i = 0; i < towers.size(); i++) {
 			Tower towerObj = towers.get(i);
-			towerObj.rotate(enemies);
-			towerObj.attack(enemies);
+			Enemy closestEnemy = getClosestEnemy(towerObj);
+			towerObj.rotate(closestEnemy);
+			towerObj.attack(closestEnemy);
 		}
 	}
 
@@ -52,6 +54,37 @@ public class GameLogic {
 		} else {
 			enemySpawn--;
 		}
+	}
+
+	private Enemy getClosestEnemy(Tower tower) {
+		Enemy closestEnemy = null;
+		float closestDist = Float.MAX_VALUE;
+		ArrayList<Enemy> enemies = game.getEnemies();
+		for (int i = 0; i < enemies.size(); i++) {
+			Enemy enemy = enemies.get(i);
+			if (closestEnemy == null) {
+				closestEnemy = enemy;
+				closestDist = getEuclideanDistance(enemy, tower);
+			} else {
+				float enemyDist = getEuclideanDistance(enemy, tower);
+				if (enemyDist < closestDist) {
+					closestEnemy = enemy;
+					closestDist = enemyDist;
+				}
+			}
+		}
+		return closestEnemy;
+	}
+
+	private float getEuclideanDistance(Entity entity1, Entity entity2) {
+		float xDiff = entity1.getLocationX() - entity2.getLocationX();
+		float yDiff = entity1.getLocationY() - entity2.getLocationY();
+
+		double a = Math.pow( (double) xDiff, 2);
+		double b = Math.pow( (double) yDiff, 2);
+
+		float c = (float) Math.sqrt(a + b);
+		return c;
 	}
 
 }
