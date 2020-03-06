@@ -4,14 +4,11 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-import com.quellus.Enemy;
-import com.quellus.Tower;
 import com.quellus.GameLogic;
 import com.quellus.Game;
 
@@ -38,6 +35,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		mapImage = new Texture("basic-map.png");
 		enemyImage = new Texture("enemy.png");
 		towerImage = new Texture("basic-tower.png");
+
 	}
 
 	@Override
@@ -46,6 +44,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(mapImage, 0, 0, 256 * textureScale, 256 * textureScale);
+		handleInput();
 		gameLogic.update();
 		drawEnemies();
 		drawTowers();
@@ -61,13 +60,11 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		ArrayList<Enemy> enemies = game.getEnemies();
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemyObj = enemies.get(i);
-			if (enemyObj.getHealth() > 0) {
-				Sprite enemySprite = new Sprite(enemyImage, 16, 16);
-				enemySprite.setScale(textureScale);
-				enemySprite.setPosition(enemyObj.getLocationX() * locationScale + locationOffset, enemyObj.getLocationY() *  locationScale + locationOffset);
-				enemySprite.setRotation(enemyObj.getRotation());
-				enemySprite.draw(batch);
-			}
+			Sprite enemySprite = new Sprite(enemyImage, 16, 16);
+			enemySprite.setScale(textureScale);
+			enemySprite.setPosition(enemyObj.getLocationX() * locationScale + locationOffset, enemyObj.getLocationY() *  locationScale + locationOffset);
+			enemySprite.setRotation(enemyObj.getRotation());
+			enemySprite.draw(batch);
 		}
 	}
 
@@ -81,6 +78,21 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 			towerSprite.setRotation(towerObj.getRotation());
 			towerSprite.draw(batch);
 		}
+	}
+
+	public void handleInput() {
+		if (Gdx.input.justTouched()) {
+			int x = Gdx.input.getX();
+			int y = screenSizeY - Gdx.input.getY();
+			x = inputToMapCoords(x);
+			y = inputToMapCoords(y);
+			gameLogic.spawnTowerAt(x, y);
+		}
+	}
+
+	public int inputToMapCoords(int coord) {
+		coord = (int) (coord / locationScale);
+		return coord;
 	}
 
 }

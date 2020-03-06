@@ -15,6 +15,7 @@ public class Enemy extends Entity {
 	private int lastWaypoint = 0;
 	
 	private int health = 100;
+	private boolean isDead = false;
 
 	public Enemy(int[][] map) {
 		this.map = map;
@@ -25,34 +26,41 @@ public class Enemy extends Entity {
 	}
 
 	public void move() {
-		if (map.length >= lastWaypoint + 1) {
-			if (map.length > lastWaypoint + 1 && Math.abs(locationX - map[lastWaypoint][0]) <= moveSpeed && Math.abs(locationY - map[lastWaypoint][1]) <= moveSpeed) {
-				locationX = map[lastWaypoint][0];
-				locationY = map[lastWaypoint][1];
-				lastWaypoint++;
-			}
+		if (map.length == lastWaypoint + 1 && Math.abs(locationX - map[lastWaypoint][0]) <= moveSpeed && Math.abs(locationY - map[lastWaypoint][1]) <= moveSpeed) {
+			isDead = true;
+			return;
+		}
 
-			int targetX = map[lastWaypoint][0];
-			int targetY = map[lastWaypoint][1];
-			
-			if (locationX == targetX) {
-				if (locationY < targetY) {
-					rotation = UP;
-					locationY += moveSpeed;
-				} else if (locationY > targetY) {
-					rotation = DOWN;
-					locationY -= moveSpeed;
-				}
-			} else if (locationY == targetY) {
-				if (locationX < targetX) {
-					rotation = RIGHT;
-					locationX += moveSpeed;
-				} else if (locationX > targetX) {
-					rotation = LEFT;
-					locationX -= moveSpeed;
-				}
+		if (map.length > lastWaypoint + 1 && Math.abs(locationX - map[lastWaypoint][0]) <= moveSpeed && Math.abs(locationY - map[lastWaypoint][1]) <= moveSpeed) {
+			locationX = map[lastWaypoint][0];
+			locationY = map[lastWaypoint][1];
+			lastWaypoint++;
+		}
+
+		int targetX = map[lastWaypoint][0];
+		int targetY = map[lastWaypoint][1];
+		
+		if (locationX == targetX) {
+			if (locationY < targetY) {
+				rotation = UP;
+				locationY += moveSpeed;
+			} else if (locationY > targetY) {
+				rotation = DOWN;
+				locationY -= moveSpeed;
+			}
+		} else if (locationY == targetY) {
+			if (locationX < targetX) {
+				rotation = RIGHT;
+				locationX += moveSpeed;
+			} else if (locationX > targetX) {
+				rotation = LEFT;
+				locationX -= moveSpeed;
 			}
 		}
+	}
+
+	public boolean isDead() {
+		return isDead;
 	}
 
 	public float getMoveSpeed() {
@@ -72,6 +80,7 @@ public class Enemy extends Entity {
 			health -= damage;
 		} else {
 			//TODO idk remove the enemy from the list somehow
+			isDead = true;
 		}
 		
 	}

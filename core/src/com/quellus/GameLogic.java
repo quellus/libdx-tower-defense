@@ -15,7 +15,7 @@ public class GameLogic {
 	public GameLogic(Game game) {
 		this.game = game;
 		//TODO this is temporary
-		game.addTower(new Tower());
+		//game.addTower(new Tower());
 		int[][] map = game.getMap();
 		game.addEnemy(new Enemy(map));
 	}
@@ -26,24 +26,32 @@ public class GameLogic {
 		rotateTowers();
 	}
 
+	public void spawnTowerAt(int x, int y) {
+		game.addTower(new Tower(x, y));
+	}
+
 	private void moveEnemies() {
 		ArrayList<Enemy> enemies = game.getEnemies();
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemyObj = enemies.get(i);
-			if (enemyObj.getHealth() > 0) {
+			if (!enemyObj.isDead()) {
 				enemyObj.move();
+			}	else {
+				game.removeEnemy(enemyObj);
 			}
 		}
 	}
 
 	private void rotateTowers() {
 		ArrayList<Enemy> enemies = game.getEnemies();
-		ArrayList<Tower> towers = game.getTowers();
-		for (int i = 0; i < towers.size(); i++) {
-			Tower towerObj = towers.get(i);
-			Enemy closestEnemy = getClosestEnemy(towerObj);
-			towerObj.rotate(closestEnemy);
-			towerObj.attack(closestEnemy);
+		if (enemies.size() > 0) {
+			ArrayList<Tower> towers = game.getTowers();
+			for (int i = 0; i < towers.size(); i++) {
+				Tower towerObj = towers.get(i);
+				Enemy closestEnemy = getClosestEnemy(towerObj);
+				towerObj.rotate(closestEnemy);
+				towerObj.attack(closestEnemy);
+			}
 		}
 	}
 

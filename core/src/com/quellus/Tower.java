@@ -11,9 +11,9 @@ public class Tower extends Entity {
 	int cooldown = 5;
 	int currentCooldown = 0;
 
-	public Tower() {
-		locationX = 6;
-		locationY = 9;
+	public Tower(int x, int y) {
+		locationX = x;
+		locationY = y;
 	}
 
 	public void attack(Enemy enemy) {

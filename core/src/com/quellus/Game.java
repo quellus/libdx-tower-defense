@@ -31,6 +31,11 @@ public class Game {
 		enemies.add(enemy);
 	}
 
+	public void removeEnemy(Enemy enemy) {
+		System.out.println("Removing enemy");
+		enemies.remove(enemy);
+	}
+
 	public ArrayList<Tower> getTowers() {
 		return towers;
 	}
