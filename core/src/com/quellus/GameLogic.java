@@ -14,8 +14,6 @@ public class GameLogic {
 
 	public GameLogic(Game game) {
 		this.game = game;
-		//TODO this is temporary
-		//game.addTower(new Tower());
 		int[][] map = game.getMap();
 		game.addEnemy(new Enemy(map));
 	}

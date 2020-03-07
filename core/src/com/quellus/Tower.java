@@ -7,9 +7,9 @@ import com.quellus.Entity;
 
 public class Tower extends Entity {
 
-	int damage = 1;
-	int cooldown = 5;
-	int currentCooldown = 0;
+	private int damage = 1;
+	private int cooldown = 5;
+	private int currentCooldown = 0;
 
 	public Tower(int x, int y) {
 		locationX = x;

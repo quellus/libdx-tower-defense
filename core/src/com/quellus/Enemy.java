@@ -79,7 +79,6 @@ public class Enemy extends Entity {
 		if (health > 0) {
 			health -= damage;
 		} else {
-			//TODO idk remove the enemy from the list somehow
 			isDead = true;
 		}
 		

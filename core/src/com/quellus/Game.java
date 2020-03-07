@@ -32,7 +32,6 @@ public class Game {
 	}
 
 	public void removeEnemy(Enemy enemy) {
-		System.out.println("Removing enemy");
 		enemies.remove(enemy);
 	}
 

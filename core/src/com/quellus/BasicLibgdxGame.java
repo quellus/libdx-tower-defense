@@ -15,7 +15,6 @@ import com.quellus.Game;
 public class BasicLibgdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture enemyImage;
-	Texture mapImage;
 	Texture towerImage;
 	Texture mapTileImage;
 	Texture mapPathImage;
@@ -34,7 +33,6 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		locationScale = screenSizeY / 16f;
 		locationOffset = 25;
 		batch = new SpriteBatch();
-		mapImage = new Texture("basic-map.png");
 		enemyImage = new Texture("enemy.png");
 		towerImage = new Texture("basic-tower.png");
 		mapTileImage = new Texture("map-tile.png");
@@ -71,15 +69,12 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 	public void drawMapPath() {
 		int[][] map = game.getMap();
 		for (int i = 0; i < map.length; i++) {
-			System.out.println("for loop");
-			int[] currPointCoords = map[i];
-			int[] currCoords = currPointCoords;
+			int[] currCoords = map[i];
 			int[] nextPointCoords = null;
 
 			if (i + 1 < map.length) {
 				nextPointCoords = map[i + 1];
 			} else {
-				System.out.println("return");
 				return;
 			}
 
@@ -88,10 +83,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 			int x = currCoords[0];
 			int y = currCoords[1];
 
-			System.out.println(x + " " + pointX);
-
 			while (pointX != x || pointY != y) {
-				System.out.println("while loop");
 				batch.draw(mapPathImage, x * locationScale, y * locationScale, 16 * textureScale, 16 * textureScale);
 				if (pointX == x) {
 					if (pointY > y) {
