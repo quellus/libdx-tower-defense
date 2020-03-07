@@ -17,6 +17,8 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 	Texture enemyImage;
 	Texture mapImage;
 	Texture towerImage;
+	Texture mapTileImage;
+	Texture mapPathImage;
 	Game game = new Game();
 	GameLogic gameLogic = new GameLogic(game);
 	int screenSizeY;
@@ -35,7 +37,8 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		mapImage = new Texture("basic-map.png");
 		enemyImage = new Texture("enemy.png");
 		towerImage = new Texture("basic-tower.png");
-
+		mapTileImage = new Texture("map-tile.png");
+		mapPathImage = new Texture("map-path.png");
 	}
 
 	@Override
@@ -43,9 +46,10 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		batch.draw(mapImage, 0, 0, 256 * textureScale, 256 * textureScale);
 		handleInput();
 		gameLogic.update();
+		drawMapTiles();
+		drawMapPath();
 		drawEnemies();
 		drawTowers();
 		batch.end();
@@ -54,6 +58,57 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		batch.dispose();
+	}
+
+	public void drawMapTiles() {
+		for (int x = 0; x < 16; x++) {
+			for (int y = 0; y < 16; y++) {
+				batch.draw(mapTileImage, x * locationScale, y * locationScale, 16 * textureScale, 16 * textureScale);
+			}
+		}
+	}
+
+	public void drawMapPath() {
+		int[][] map = game.getMap();
+		for (int i = 0; i < map.length; i++) {
+			System.out.println("for loop");
+			int[] currPointCoords = map[i];
+			int[] currCoords = currPointCoords;
+			int[] nextPointCoords = null;
+
+			if (i + 1 < map.length) {
+				nextPointCoords = map[i + 1];
+			} else {
+				System.out.println("return");
+				return;
+			}
+
+			int pointX = nextPointCoords[0];
+			int pointY = nextPointCoords[1];
+			int x = currCoords[0];
+			int y = currCoords[1];
+
+			System.out.println(x + " " + pointX);
+
+			while (pointX != x || pointY != y) {
+				System.out.println("while loop");
+				batch.draw(mapPathImage, x * locationScale, y * locationScale, 16 * textureScale, 16 * textureScale);
+				if (pointX == x) {
+					if (pointY > y) {
+						y++;
+					} else {
+						y--;
+					}
+				} else {
+					if (pointX > x) {
+						x++;
+					} else {
+						x--;
+					}
+				}
+			}
+			batch.draw(mapPathImage, x * locationScale, y * locationScale, 16 * textureScale, 16 * textureScale);
+		}
 	}
 
 	public void drawEnemies() {
