@@ -40,23 +40,7 @@ public class Enemy extends Entity {
 		int targetX = map[lastWaypoint][0];
 		int targetY = map[lastWaypoint][1];
 		
-		if (locationX == targetX) {
-			if (locationY < targetY) {
-				rotation = UP;
-				locationY += moveSpeed;
-			} else if (locationY > targetY) {
-				rotation = DOWN;
-				locationY -= moveSpeed;
-			}
-		} else if (locationY == targetY) {
-			if (locationX < targetX) {
-				rotation = RIGHT;
-				locationX += moveSpeed;
-			} else if (locationX > targetX) {
-				rotation = LEFT;
-				locationX -= moveSpeed;
-			}
-		}
+		moveAndRotateTowards(targetX, targetY);
 	}
 
 	public boolean isDead() {
@@ -82,6 +66,26 @@ public class Enemy extends Entity {
 			isDead = true;
 		}
 		
+	}
+
+	private void moveAndRotateTowards(int targetX, int targetY) {
+		if (locationX == targetX) {
+			if (locationY < targetY) {
+				rotation = UP;
+				locationY += moveSpeed;
+			} else if (locationY > targetY) {
+				rotation = DOWN;
+				locationY -= moveSpeed;
+			}
+		} else if (locationY == targetY) {
+			if (locationX < targetX) {
+				rotation = RIGHT;
+				locationX += moveSpeed;
+			} else if (locationX > targetX) {
+				rotation = LEFT;
+				locationX -= moveSpeed;
+			}
+		}
 	}
 
 }
