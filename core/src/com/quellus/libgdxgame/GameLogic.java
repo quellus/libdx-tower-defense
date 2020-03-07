@@ -1,11 +1,11 @@
-package com.quellus;
+package com.quellus.libgdxgame;
 
 import java.util.ArrayList;
 
-import com.quellus.Game;
-import com.quellus.Entity;
-import com.quellus.Enemy;
-import com.quellus.Tower;
+import com.quellus.libgdxgame.Game;
+import com.quellus.libgdxgame.Entity;
+import com.quellus.libgdxgame.Enemy;
+import com.quellus.libgdxgame.Tower;
 
 public class GameLogic {
 	private Game game;

@@ -1,8 +1,8 @@
-package com.quellus;
+package com.quellus.libgdxgame;
 
 import java.lang.Math;
 
-import com.quellus.Entity;
+import com.quellus.libgdxgame.Entity;
 
 public class Enemy extends Entity {
 	final public int UP = 0;

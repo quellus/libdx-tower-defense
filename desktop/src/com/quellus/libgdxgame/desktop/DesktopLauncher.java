@@ -1,9 +1,9 @@
-package com.quellus.desktop;
+package com.quellus.libgdxgame.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.Gdx;
-import com.quellus.BasicLibgdxGame;
+import com.quellus.libgdxgame.BasicLibgdxGame;
 
 public class DesktopLauncher {
 

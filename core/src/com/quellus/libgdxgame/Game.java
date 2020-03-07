@@ -1,11 +1,11 @@
-package com.quellus;
+package com.quellus.libgdxgame;
 
 import java.util.ArrayList;
 
-import com.quellus.Enemy;
-import com.quellus.Tower;
-import com.quellus.GameLogic;
-import com.quellus.Game;
+import com.quellus.libgdxgame.Enemy;
+import com.quellus.libgdxgame.Tower;
+import com.quellus.libgdxgame.GameLogic;
+import com.quellus.libgdxgame.Game;
 
 public class Game {
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();

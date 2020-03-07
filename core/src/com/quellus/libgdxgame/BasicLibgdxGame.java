@@ -1,4 +1,4 @@
-package com.quellus;
+package com.quellus.libgdxgame;
 
 import java.util.ArrayList;
 
@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-import com.quellus.GameLogic;
-import com.quellus.Game;
+import com.quellus.libgdxgame.GameLogic;
+import com.quellus.libgdxgame.Game;
 
 public class BasicLibgdxGame extends ApplicationAdapter {
 	SpriteBatch batch;

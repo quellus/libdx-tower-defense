@@ -1,9 +1,9 @@
-package com.quellus;
+package com.quellus.libgdxgame;
 
 import java.lang.Math;
 import java.util.ArrayList;
 
-import com.quellus.Entity;
+import com.quellus.libgdxgame.Entity;
 
 public class Tower extends Entity {
 
