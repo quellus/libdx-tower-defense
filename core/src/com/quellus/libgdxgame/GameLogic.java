@@ -14,7 +14,7 @@ public class GameLogic {
 
 	public GameLogic(Game game) {
 		this.game = game;
-		int[][] map = game.getMap();
+		Coordinate<Integer>[] map = game.getMap();
 		game.addEnemy(new Enemy(map));
 	}
 	

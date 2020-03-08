@@ -10,35 +10,35 @@ public class Enemy extends Entity {
 	final public int LEFT = 90;
 	final public int RIGHT = 270;
 
-	private int[][] map;
+	private Coordinate<Integer>[] map;
 
 	private int lastWaypoint = 0;
 	
 	private int health = 100;
 	private boolean isDead = false;
 
-	public Enemy(int[][] map) {
+	public Enemy(Coordinate<Integer>[] map) {
 		this.map = map;
 		moveSpeed = 0.05f;
-		locationX = map[0][0];
-		locationY = map[0][1];
+		locationX = map[0].getX();
+		locationY = map[0].getY();
 		setRotation(LEFT);
 	}
 
 	public void move() {
-		if (map.length == lastWaypoint + 1 && Math.abs(locationX - map[lastWaypoint][0]) <= moveSpeed && Math.abs(locationY - map[lastWaypoint][1]) <= moveSpeed) {
+		if (map.length == lastWaypoint + 1 && Math.abs(locationX - map[lastWaypoint].getX()) <= moveSpeed && Math.abs(locationY - map[lastWaypoint].getY()) <= moveSpeed) {
 			isDead = true;
 			return;
 		}
 
-		if (map.length > lastWaypoint + 1 && Math.abs(locationX - map[lastWaypoint][0]) <= moveSpeed && Math.abs(locationY - map[lastWaypoint][1]) <= moveSpeed) {
-			locationX = map[lastWaypoint][0];
-			locationY = map[lastWaypoint][1];
+		if (map.length > lastWaypoint + 1 && Math.abs(locationX - map[lastWaypoint].getX()) <= moveSpeed && Math.abs(locationY - map[lastWaypoint].getY()) <= moveSpeed) {
+			locationX = map[lastWaypoint].getX();
+			locationY = map[lastWaypoint].getY();
 			lastWaypoint++;
 		}
 
-		int targetX = map[lastWaypoint][0];
-		int targetY = map[lastWaypoint][1];
+		int targetX = map[lastWaypoint].getX();
+		int targetY = map[lastWaypoint].getY();
 		
 		moveAndRotateTowards(targetX, targetY);
 	}
