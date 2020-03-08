@@ -31,7 +31,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		screenSizeY = Gdx.graphics.getHeight();
 		textureScale = screenSizeY / 256f;
 		locationScale = screenSizeY / 16f;
-		locationOffset = 25;
+		locationOffset = 25; //TODO change this
 		batch = new SpriteBatch();
 		enemyImage = new Texture("enemy.png");
 		towerImage = new Texture("basic-tower.png");
