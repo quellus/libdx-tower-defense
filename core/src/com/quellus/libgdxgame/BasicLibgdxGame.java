@@ -31,7 +31,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		screenSizeY = Gdx.graphics.getHeight();
 		textureScale = screenSizeY / 256f;
 		locationScale = screenSizeY / 16f;
-		locationOffset = 25; //TODO change this
+		locationOffset = 6f / 16f; //TODO change this it is one pixel off on android
 		batch = new SpriteBatch();
 		enemyImage = new Texture("enemy.png");
 		towerImage = new Texture("basic-tower.png");
@@ -109,8 +109,8 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 			Enemy enemyObj = enemies.get(i);
 			Sprite enemySprite = new Sprite(enemyImage, 16, 16);
 			enemySprite.setScale(textureScale);
-			enemySprite.setPosition(enemyObj.getLocationX() * locationScale + locationOffset, enemyObj.getLocationY() *  locationScale + locationOffset);
 			enemySprite.setRotation(enemyObj.getRotation());
+			enemySprite.setPosition((enemyObj.getLocationX() + locationOffset) * locationScale, (enemyObj.getLocationY() + locationOffset) *  locationScale);
 			enemySprite.draw(batch);
 		}
 	}
@@ -121,7 +121,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		towerSprite.setScale(textureScale);
 		for (int i = 0; i < towers.size(); i++) {
 			Tower towerObj = towers.get(i);
-			towerSprite.setPosition(towerObj.getLocationX() * locationScale + locationOffset, towerObj.getLocationY() *  locationScale + locationOffset);
+			towerSprite.setPosition((towerObj.getLocationX() + locationOffset) * locationScale , (towerObj.getLocationY() + locationOffset) *  locationScale);
 			towerSprite.setRotation(towerObj.getRotation());
 			towerSprite.draw(batch);
 		}
