@@ -25,6 +25,17 @@ public class GameLogic {
 	}
 
 	public void spawnTowerAt(int x, int y) {
+		// TODO check if location is path
+		// TODO check if tower already there
+		ArrayList<Tower> towers = game.getTowers();
+		for (int i = 0; i < towers.size(); i++) {
+			Tower tower = towers.get(i);
+			if (tower.getLocationX() == x && tower.getLocationY() == y) {
+				System.out.println("Tower already exists!");
+				return;
+			}
+		}
+
 		game.addTower(new Tower(x, y));
 	}
 
