@@ -25,4 +25,8 @@ public class Coordinate<Type> {
         this.y = y;
     }
 
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
+
 }

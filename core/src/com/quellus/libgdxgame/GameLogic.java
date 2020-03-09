@@ -26,17 +26,42 @@ public class GameLogic {
 
 	public void spawnTowerAt(int x, int y) {
 		// TODO check if location is path
-		// TODO check if tower already there
+	
+		if (isPathAt(x, y)) {
+			System.out.println("There's path there!");
+			return;
+		}
+
+
+		if (isTowerAt(x, y)) {
+			System.out.println("Tower already exists!");
+			return;
+		}
+		game.addTower(new Tower(x, y));
+	}
+
+	private boolean isPathAt(int x, int y) {
+		Coordinate<Integer>[] map = game.getMap();
+		for (int i = 0; i < map.length; i++) {
+			Coordinate<Integer> coord = map[i];
+			if (coord.getX() == x && coord.getY() == y) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isTowerAt(int x, int y) {
 		ArrayList<Tower> towers = game.getTowers();
 		for (int i = 0; i < towers.size(); i++) {
 			Tower tower = towers.get(i);
 			if (tower.getLocationX() == x && tower.getLocationY() == y) {
-				System.out.println("Tower already exists!");
-				return;
+				return true;
 			}
 		}
 
-		game.addTower(new Tower(x, y));
+		return false;
+
 	}
 
 	private void moveEnemies() {

@@ -55,18 +55,31 @@ public class Game {
 			return false;
 		}
 
+		ArrayList<Coordinate<Integer>> coordsList = readAndParseMapFile(reader);
 
+		coordsList = waypointsToTiles(coordsList);
+		if (coordsList == null) {
+			System.out.println("waypointsToTiles failed");
+			return false;
+		}
+
+		Coordinate<Integer>[] map = new Coordinate[coordsList.size()];
+		this.map = coordsList.toArray(map);
+		debugMap();
+		return true;
+	}
+
+	private ArrayList<Coordinate<Integer>> readAndParseMapFile(BufferedReader reader) {
 		ArrayList<Coordinate<Integer>> coordsList = new ArrayList<Coordinate<Integer>>();
 
 		try {
 			String line = reader.readLine();
 
 			while (line != null) {
-				System.out.println(line);
 				String[] coords = line.split(" ");
 				if (coords.length < 2) {
 					System.out.println("The map file is bad");
-					return false;
+					return null;
 				}
 				Coordinate<Integer> coord = new Coordinate<Integer>(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
 
@@ -76,13 +89,58 @@ public class Game {
 			}
 		} catch (IOException e) {
 			System.out.println("idk something broke I guess");
-			return false;
+			return null;
 		}
 
-		Coordinate<Integer>[] map = new Coordinate[coordsList.size()];
-		this.map = coordsList.toArray(map);
-		return true;
+		return coordsList;
 
+	}
+
+	private ArrayList<Coordinate<Integer>> waypointsToTiles(ArrayList<Coordinate<Integer>> map) {
+		ArrayList<Coordinate<Integer>> newMap = new ArrayList<Coordinate<Integer>>();
+		for (int i = 0; i < map.size(); i++) {
+			Coordinate<Integer> currCoords = map.get(i);
+			Coordinate<Integer> nextPointCoords = null;
+
+			int x = currCoords.getX();
+			int y = currCoords.getY();
+
+			if (i + 1 < map.size()) {
+				nextPointCoords = map.get(i + 1);
+			} else {
+				newMap.add(new Coordinate<Integer>(x, y));
+				return newMap;
+			}
+
+			int pointX = nextPointCoords.getX();
+			int pointY = nextPointCoords.getY();
+
+			while (pointX != x || pointY != y) {
+				newMap.add(new Coordinate<Integer>(x, y));
+				if (pointX == x) {
+					if (pointY > y) {
+						y++;
+					} else {
+						y--;
+					}
+				} else {
+					if (pointX > x) {
+						x++;
+					} else {
+						x--;
+					}
+				}
+			}
+		}
+		return newMap;
+	}
+
+	private void debugMap() {
+		String mapStr = "";
+		for (int i = 0; i < map.length; i++) {
+			mapStr += ", " + map[i].toString();
+		}
+		System.out.println(mapStr);
 	}
 
 }

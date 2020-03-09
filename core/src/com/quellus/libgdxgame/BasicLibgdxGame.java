@@ -69,36 +69,8 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 	public void drawMapPath() {
 		Coordinate<Integer>[] map = game.getMap();
 		for (int i = 0; i < map.length; i++) {
-			Coordinate<Integer> currCoords = map[i];
-			Coordinate<Integer> nextPointCoords = null;
-
-			if (i + 1 < map.length) {
-				nextPointCoords = map[i + 1];
-			} else {
-				return;
-			}
-
-			int pointX = nextPointCoords.getX();
-			int pointY = nextPointCoords.getY();
-			int x = currCoords.getX();
-			int y = currCoords.getY();
-
-			while (pointX != x || pointY != y) {
-				batch.draw(mapPathImage, x * locationScale, y * locationScale, 16 * textureScale, 16 * textureScale);
-				if (pointX == x) {
-					if (pointY > y) {
-						y++;
-					} else {
-						y--;
-					}
-				} else {
-					if (pointX > x) {
-						x++;
-					} else {
-						x--;
-					}
-				}
-			}
+			int x = map[i].getX();
+			int y = map[i].getY();
 			batch.draw(mapPathImage, x * locationScale, y * locationScale, 16 * textureScale, 16 * textureScale);
 		}
 	}
