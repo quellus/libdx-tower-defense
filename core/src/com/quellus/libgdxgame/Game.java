@@ -65,7 +65,6 @@ public class Game {
 
 		Coordinate<Integer>[] map = new Coordinate[coordsList.size()];
 		this.map = coordsList.toArray(map);
-		debugMap();
 		return true;
 	}
 

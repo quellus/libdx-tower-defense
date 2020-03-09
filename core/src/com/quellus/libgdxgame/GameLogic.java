@@ -21,12 +21,10 @@ public class GameLogic {
 	public void update() {
 		spawnEnemy();
 		moveEnemies();
-		rotateTowers();
+		rotateAndAttackTowers();
 	}
 
 	public void spawnTowerAt(int x, int y) {
-		// TODO check if location is path
-	
 		if (isPathAt(x, y)) {
 			System.out.println("There's path there!");
 			return;
@@ -76,15 +74,16 @@ public class GameLogic {
 		}
 	}
 
-	private void rotateTowers() {
+	private void rotateAndAttackTowers() {
 		ArrayList<Enemy> enemies = game.getEnemies();
 		if (enemies.size() > 0) {
 			ArrayList<Tower> towers = game.getTowers();
 			for (int i = 0; i < towers.size(); i++) {
 				Tower towerObj = towers.get(i);
 				Enemy closestEnemy = getClosestEnemy(towerObj);
+				towerObj.updateCooldown();
 				towerObj.rotate(closestEnemy);
-				towerObj.attack(closestEnemy);
+				closestEnemy.attack(towerObj.getDamage());
 			}
 		}
 	}

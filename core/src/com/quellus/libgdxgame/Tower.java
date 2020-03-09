@@ -16,12 +16,11 @@ public class Tower extends Entity {
 		locationY = y;
 	}
 
-	public void attack(Enemy enemy) {
+	public void updateCooldown() {
 		if (currentCooldown > 0) {
 			currentCooldown--;
 		}
 		if (currentCooldown == 0) {
-			enemy.attack(damage);
 			currentCooldown = cooldown;
 		}
 	}
@@ -46,6 +45,10 @@ public class Tower extends Entity {
 		double angleRadians = Math.atan(value);
 		double angleDegrees = Math.toDegrees(angleRadians);
 		rotation += (int) Math.floor(angleDegrees);
+	}
+
+	public int getDamage() {
+		return damage;
 	}
 
 }
