@@ -8,21 +8,12 @@ import com.quellus.libgdxgame.Entity;
 public class Tower extends Entity {
 
 	private int damage = 1;
-	private int cooldown = 5;
+	private int cooldown = 10;
 	private int currentCooldown = 0;
 
 	public Tower(int x, int y) {
 		locationX = x;
 		locationY = y;
-	}
-
-	public void updateCooldown() {
-		if (currentCooldown > 0) {
-			currentCooldown--;
-		}
-		if (currentCooldown == 0) {
-			currentCooldown = cooldown;
-		}
 	}
 
 	public void rotate(Enemy enemy) {
@@ -49,6 +40,23 @@ public class Tower extends Entity {
 
 	public int getDamage() {
 		return damage;
+	}
+
+	public Projectile attack(Enemy enemy) {
+		boolean canAttack = currentCooldown == 0;
+		updateCooldown();
+		if (canAttack) {
+			return new Projectile(this, enemy, damage);
+		}
+		return null;
+	}
+
+	public void updateCooldown() {
+		if (currentCooldown >= 0) {
+			currentCooldown--;
+		} else if (currentCooldown < 0) {
+			currentCooldown = cooldown;
+		}
 	}
 
 }

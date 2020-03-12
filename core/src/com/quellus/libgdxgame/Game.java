@@ -4,15 +4,12 @@ import java.util.ArrayList;
 
 import java.io.*;
 
-import com.quellus.libgdxgame.Enemy;
-import com.quellus.libgdxgame.Tower;
-import com.quellus.libgdxgame.GameLogic;
-import com.quellus.libgdxgame.Game;
-import com.quellus.libgdxgame.Coordinate;
+import com.quellus.libgdxgame.*;
 
 public class Game {
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	private ArrayList<Tower> towers = new ArrayList<Tower>();
+	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 
 	private Coordinate<Integer>[] map;
 
@@ -38,6 +35,18 @@ public class Game {
 
 	public void addTower(Tower tower) {
 		towers.add(tower);
+	}
+
+	public ArrayList<Projectile> getProjectiles() {
+		return projectiles;
+	}
+
+	public void addProjectile(Projectile projectile) {
+		projectiles.add(projectile);
+	}
+
+	public void removeProjectile(Projectile projectile) {
+		projectiles.remove(projectile);
 	}
 	
 	public Coordinate<Integer>[] getMap() {

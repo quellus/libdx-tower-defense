@@ -2,10 +2,7 @@ package com.quellus.libgdxgame;
 
 import java.util.ArrayList;
 
-import com.quellus.libgdxgame.Game;
-import com.quellus.libgdxgame.Entity;
-import com.quellus.libgdxgame.Enemy;
-import com.quellus.libgdxgame.Tower;
+import com.quellus.libgdxgame.*;
 
 public class GameLogic {
 	private Game game;
@@ -22,6 +19,7 @@ public class GameLogic {
 		spawnEnemy();
 		moveEnemies();
 		rotateAndAttackTowers();
+		moveAndAttackProjectiles();
 	}
 
 	public void spawnTowerAt(int x, int y) {
@@ -81,9 +79,30 @@ public class GameLogic {
 			for (int i = 0; i < towers.size(); i++) {
 				Tower towerObj = towers.get(i);
 				Enemy closestEnemy = getClosestEnemy(towerObj);
-				towerObj.updateCooldown();
 				towerObj.rotate(closestEnemy);
-				closestEnemy.attack(towerObj.getDamage());
+				Projectile projectile = towerObj.attack(closestEnemy);
+				if (projectile != null) {
+					game.addProjectile(projectile);
+				}
+			}
+		}
+	}
+
+	private void moveAndAttackProjectiles() {
+		ArrayList<Projectile> projectiles = game.getProjectiles();
+		if (projectiles.size() > 0) {
+			for (int i = 0; i < projectiles.size(); i++) {
+				Projectile projectile = projectiles.get(i);
+				if (projectile.isTargetDead()) {
+					game.removeProjectile(projectile);
+				} else {
+					if (projectile.isCollisionWithTarget()) {
+						projectile.getTarget().attack(projectile.getDamage());
+						game.removeProjectile(projectile);
+					} else {
+						projectile.move();
+					}
+				}
 			}
 		}
 	}

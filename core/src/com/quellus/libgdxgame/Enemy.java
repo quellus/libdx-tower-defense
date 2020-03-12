@@ -14,7 +14,7 @@ public class Enemy extends Entity {
 
 	private int lastWaypoint = 0;
 	
-	private int health = 100;
+	private int health = 20;
 	private boolean isDead = false;
 
 	public Enemy(Coordinate<Integer>[] map) {

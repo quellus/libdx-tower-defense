@@ -16,6 +16,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture enemyImage;
 	Texture towerImage;
+	Texture bulletImage;
 	Texture mapTileImage;
 	Texture mapPathImage;
 	Game game = new Game();
@@ -35,6 +36,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		enemyImage = new Texture("enemy.png");
 		towerImage = new Texture("basic-tower.png");
+		bulletImage = new Texture("bullet.png");
 		mapTileImage = new Texture("map-tile.png");
 		mapPathImage = new Texture("map-path.png");
 	}
@@ -50,6 +52,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		drawMapPath();
 		drawEnemies();
 		drawTowers();
+		drawProjectiles();
 		batch.end();
 	}
 	
@@ -96,6 +99,18 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 			towerSprite.setPosition((towerObj.getLocationX() + locationOffset) * locationScale , (towerObj.getLocationY() + locationOffset) *  locationScale);
 			towerSprite.setRotation(towerObj.getRotation());
 			towerSprite.draw(batch);
+		}
+	}
+
+	public void drawProjectiles() {
+		ArrayList<Projectile> projectiles = game.getProjectiles();
+		Sprite bulletSprite = new Sprite(bulletImage, 16, 16);
+		bulletSprite.setScale(textureScale);
+		for (int i = 0; i < projectiles.size(); i++) {
+			Projectile projectile = projectiles.get(i);
+			bulletSprite.setPosition((projectile.getLocationX() + locationOffset) * locationScale , (projectile.getLocationY() + locationOffset) *  locationScale);
+			bulletSprite.setRotation(projectile.getRotation());
+			bulletSprite.draw(batch);
 		}
 	}
 
