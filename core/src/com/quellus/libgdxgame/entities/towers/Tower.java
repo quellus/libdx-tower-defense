@@ -1,20 +1,24 @@
-package com.quellus.libgdxgame;
+package com.quellus.libgdxgame.entities.towers;
 
 import java.lang.Math;
 import java.util.ArrayList;
 
-import com.quellus.libgdxgame.Entity;
+import com.quellus.libgdxgame.entities.Entity;
+import com.quellus.libgdxgame.entities.Enemy;
+import com.quellus.libgdxgame.entities.projectiles.Projectile;
 
-public class Tower extends Entity {
+public abstract class Tower extends Entity {
 
-	private int damage = 1;
-	private int cooldown = 10;
-	private int currentCooldown = 0;
+	protected int damage = 1;
+	protected int cooldown = 10;
+	protected int currentCooldown = 0;
 
 	public Tower(int x, int y) {
 		locationX = x;
 		locationY = y;
 	}
+
+	public abstract Projectile attack(Enemy enemy);
 
 	public void rotate(Enemy enemy) {
 		double diffX = locationX - enemy.getLocationX();
@@ -40,15 +44,6 @@ public class Tower extends Entity {
 
 	public int getDamage() {
 		return damage;
-	}
-
-	public Projectile attack(Enemy enemy) {
-		boolean canAttack = currentCooldown == 0;
-		updateCooldown();
-		if (canAttack) {
-			return new Projectile(this, enemy, damage);
-		}
-		return null;
 	}
 
 	public void updateCooldown() {

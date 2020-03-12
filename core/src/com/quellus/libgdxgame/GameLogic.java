@@ -2,7 +2,12 @@ package com.quellus.libgdxgame;
 
 import java.util.ArrayList;
 
-import com.quellus.libgdxgame.*;
+import com.quellus.libgdxgame.Game;
+import com.quellus.libgdxgame.entities.towers.Tower;
+import com.quellus.libgdxgame.entities.towers.TurretTower;
+import com.quellus.libgdxgame.entities.projectiles.Projectile;
+import com.quellus.libgdxgame.entities.Enemy;
+import com.quellus.libgdxgame.entities.Entity;
 
 public class GameLogic {
 	private Game game;
@@ -33,7 +38,8 @@ public class GameLogic {
 			System.out.println("Tower already exists!");
 			return;
 		}
-		game.addTower(new Tower(x, y));
+
+		game.addTower(new TurretTower(x, y));
 	}
 
 	private boolean isPathAt(int x, int y) {

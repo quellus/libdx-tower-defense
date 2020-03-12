@@ -11,12 +11,16 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import com.quellus.libgdxgame.GameLogic;
 import com.quellus.libgdxgame.Game;
+import com.quellus.libgdxgame.entities.Enemy;
+import com.quellus.libgdxgame.entities.towers.Tower;
+import com.quellus.libgdxgame.entities.projectiles.Projectile;
 
 public class BasicLibgdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture enemyImage;
-	Texture towerImage;
 	Texture bulletImage;
+	Texture towerTurretImage;
+	Texture towerLauncherImage;
 	Texture mapTileImage;
 	Texture mapPathImage;
 	Game game = new Game();
@@ -35,8 +39,9 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		locationOffset = 6f / 16f; //TODO change this it is one pixel off on android
 		batch = new SpriteBatch();
 		enemyImage = new Texture("enemy.png");
-		towerImage = new Texture("basic-tower.png");
 		bulletImage = new Texture("bullet.png");
+		towerTurretImage = new Texture("basic-tower.png");
+		towerLauncherImage = new Texture("launcher-tower.png");
 		mapTileImage = new Texture("map-tile.png");
 		mapPathImage = new Texture("map-path.png");
 	}
@@ -92,10 +97,12 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 
 	public void drawTowers() {
 		ArrayList<Tower> towers = game.getTowers();
-		Sprite towerSprite = new Sprite(towerImage, 16, 16);
-		towerSprite.setScale(textureScale);
 		for (int i = 0; i < towers.size(); i++) {
 			Tower towerObj = towers.get(i);
+			Texture towerImage = towerTurretImage;
+
+			Sprite towerSprite = new Sprite(towerImage, 16, 16);
+			towerSprite.setScale(textureScale);
 			towerSprite.setPosition((towerObj.getLocationX() + locationOffset) * locationScale , (towerObj.getLocationY() + locationOffset) *  locationScale);
 			towerSprite.setRotation(towerObj.getRotation());
 			towerSprite.draw(batch);

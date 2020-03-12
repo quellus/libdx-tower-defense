@@ -1,4 +1,4 @@
-package com.quellus.libgdxgame;
+package com.quellus.libgdxgame.entities;
 
 public abstract class Entity {
 	final public int UP = 0;

@@ -4,7 +4,11 @@ import java.util.ArrayList;
 
 import java.io.*;
 
-import com.quellus.libgdxgame.*;
+import com.quellus.libgdxgame.GameLogic;
+import com.quellus.libgdxgame.entities.Enemy;
+import com.quellus.libgdxgame.entities.towers.Tower;
+import com.quellus.libgdxgame.entities.projectiles.Projectile;
+
 
 public class Game {
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
@@ -74,6 +78,7 @@ public class Game {
 
 		Coordinate<Integer>[] map = new Coordinate[coordsList.size()];
 		this.map = coordsList.toArray(map);
+		debugMap();
 		return true;
 	}
 
