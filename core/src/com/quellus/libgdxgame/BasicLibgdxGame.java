@@ -1,9 +1,11 @@
 package com.quellus.libgdxgame;
 
 import java.util.ArrayList;
+import java.io.File;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,8 +25,8 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 	Texture towerLauncherImage;
 	Texture mapTileImage;
 	Texture mapPathImage;
-	Game game = new Game();
-	GameLogic gameLogic = new GameLogic(game);
+	Game game;
+	GameLogic gameLogic;
 	int screenSizeY;
 
 	private float textureScale;
@@ -33,6 +35,9 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 	
 	@Override
 	public void create() {
+		FileHandle mapFile = Gdx.files.internal("basic-map.txt");
+		game = new Game("basic-map.txt");
+		gameLogic = new GameLogic(game);
 		screenSizeY = Gdx.graphics.getHeight();
 		textureScale = screenSizeY / 256f;
 		locationScale = screenSizeY / 16f;

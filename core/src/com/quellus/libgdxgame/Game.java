@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import java.io.*;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.files.FileHandle;
+
 import com.quellus.libgdxgame.GameLogic;
 import com.quellus.libgdxgame.entities.Enemy;
 import com.quellus.libgdxgame.entities.towers.Tower;
@@ -17,8 +21,9 @@ public class Game {
 
 	private Coordinate<Integer>[] map;
 
-	public Game() {
-		parseMap("basic-map.txt");
+	public Game(String filename) {
+		FileHandle mapFile = Gdx.files.internal(filename);
+		parseMap(mapFile);
 	}
 
 	public ArrayList<Enemy> getEnemies()  {
@@ -57,56 +62,30 @@ public class Game {
 		return map;
 	}
 
-	private boolean parseMap(String filename) {
-		File file;
-		BufferedReader reader;
-		try {
-			file = new File(filename);
-			reader = new BufferedReader(new FileReader(file));
-		} catch (FileNotFoundException e) {
-			System.out.println("map file not found");
+	private boolean parseMap(FileHandle file) {
+		String fileString = file.readString();
+		String[] lines = fileString.split("\\r?\\n");
+		ArrayList<Coordinate<Integer>> coordList = new ArrayList<Coordinate<Integer>>();
+		for (int i = 0; i < lines.length; i++) {
+			String[] coords = lines[i].split(" ");
+			if (coords.length != 2) {
+				Gdx.app.error("TowerDefense","Failed to parse map file");
+				return false;
+			}
+			Coordinate<Integer> coord = new Coordinate<Integer>(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
+			coordList.add(coord);
+		}
+
+		coordList = waypointsToTiles(coordList);
+		if (coordList == null) {
+			Gdx.app.error("TowerDefense", "waypointsToTiles failed");
 			return false;
 		}
 
-		ArrayList<Coordinate<Integer>> coordsList = readAndParseMapFile(reader);
-
-		coordsList = waypointsToTiles(coordsList);
-		if (coordsList == null) {
-			System.out.println("waypointsToTiles failed");
-			return false;
-		}
-
-		Coordinate<Integer>[] map = new Coordinate[coordsList.size()];
-		this.map = coordsList.toArray(map);
+		Coordinate<Integer>[] map = new Coordinate[coordList.size()];
+		this.map = coordList.toArray(map);
 		debugMap();
 		return true;
-	}
-
-	private ArrayList<Coordinate<Integer>> readAndParseMapFile(BufferedReader reader) {
-		ArrayList<Coordinate<Integer>> coordsList = new ArrayList<Coordinate<Integer>>();
-
-		try {
-			String line = reader.readLine();
-
-			while (line != null) {
-				String[] coords = line.split(" ");
-				if (coords.length < 2) {
-					System.out.println("The map file is bad");
-					return null;
-				}
-				Coordinate<Integer> coord = new Coordinate<Integer>(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
-
-				coordsList.add(coord);
-
-				line = reader.readLine();
-			}
-		} catch (IOException e) {
-			System.out.println("idk something broke I guess");
-			return null;
-		}
-
-		return coordsList;
-
 	}
 
 	private ArrayList<Coordinate<Integer>> waypointsToTiles(ArrayList<Coordinate<Integer>> map) {
@@ -153,7 +132,7 @@ public class Game {
 		for (int i = 0; i < map.length; i++) {
 			mapStr += ", " + map[i].toString();
 		}
-		System.out.println(mapStr);
+		Gdx.app.log("TowerDefense", mapStr);
 	}
 
 }
