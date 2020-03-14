@@ -71,7 +71,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		batch.dispose();
 	}
 
-	public void drawMapTiles() {
+	private void drawMapTiles() {
 		for (int x = 0; x < 16; x++) {
 			for (int y = 0; y < 16; y++) {
 				batch.draw(mapTileImage, x * locationScale, y * locationScale, 16 * textureScale, 16 * textureScale);
@@ -79,7 +79,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		}
 	}
 
-	public void drawMapPath() {
+	private void drawMapPath() {
 		Coordinate<Integer>[] map = game.getMap();
 		for (int i = 0; i < map.length; i++) {
 			int x = map[i].getX();
@@ -88,7 +88,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		}
 	}
 
-	public void drawEnemies() {
+	private void drawEnemies() {
 		ArrayList<Enemy> enemies = game.getEnemies();
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemyObj = enemies.get(i);
@@ -100,7 +100,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		}
 	}
 
-	public void drawTowers() {
+	private void drawTowers() {
 		ArrayList<Tower> towers = game.getTowers();
 		for (int i = 0; i < towers.size(); i++) {
 			Tower towerObj = towers.get(i);
@@ -114,7 +114,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		}
 	}
 
-	public void drawProjectiles() {
+	private void drawProjectiles() {
 		ArrayList<Projectile> projectiles = game.getProjectiles();
 		Sprite bulletSprite = new Sprite(bulletImage, 16, 16);
 		bulletSprite.setScale(textureScale);
@@ -126,7 +126,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		}
 	}
 
-	public void handleInput() {
+	private void handleInput() {
 		if (Gdx.input.justTouched()) {
 			int x = Gdx.input.getX();
 			int y = screenSizeY - Gdx.input.getY();
@@ -136,7 +136,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		}
 	}
 
-	public int inputToMapCoords(int coord) {
+	private int inputToMapCoords(int coord) {
 		coord = (int) (coord / locationScale);
 		return coord;
 	}
