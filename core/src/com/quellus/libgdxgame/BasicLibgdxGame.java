@@ -35,22 +35,26 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 	int screenSizeY;
 	int screenSizeX;
 
+	private float mapSize = 256f;
+	private float textureSize = 16f;
 	private float textureScale;
+	private float scaledTextureSize;
 	private float locationScale;
 	private float locationOffset;
-	
+
 	@Override
 	public void create() {
 		screenSizeY = Gdx.graphics.getHeight();
 		screenSizeX = Gdx.graphics.getWidth();
-		textureScale = screenSizeY / 256f;
-		locationScale = screenSizeY / 16f;
+		textureScale = screenSizeY / mapSize;
+		scaledTextureSize = textureSize * textureScale;
+		locationScale = screenSizeY / textureSize;
+		locationOffset = 6f / textureSize; //TODO change this it is one pixel off on android
 		FileHandle mapFile = Gdx.files.internal("basic-map.txt");
 		menu = new Menu();
 		game = new Game("basic-map.txt");
 		gameLogic = new GameLogic(game);
 		input = new Input(screenSizeX, screenSizeY, locationScale, gameLogic, menu);
-		locationOffset = 6f / 16f; //TODO change this it is one pixel off on android
 		batch = new SpriteBatch();
 		menuBackgroundImage = new Texture("menu-background.png");
 		enemyImage = new Texture("enemy.png");
@@ -87,7 +91,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 	private void drawMapTiles() {
 		for (int x = 0; x < 16; x++) {
 			for (int y = 0; y < 16; y++) {
-				batch.draw(mapTileImage, x * locationScale, y * locationScale, 16 * textureScale, 16 * textureScale);
+				batch.draw(mapTileImage, x * locationScale, y * locationScale, scaledTextureSize, scaledTextureSize);
 			}
 		}
 	}
@@ -97,14 +101,14 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		for (int i = 0; i < map.length; i++) {
 			int x = map[i].getX();
 			int y = map[i].getY();
-			batch.draw(mapPathImage, x * locationScale, y * locationScale, 16 * textureScale, 16 * textureScale);
+			batch.draw(mapPathImage, x * locationScale, y * locationScale, scaledTextureSize, scaledTextureSize);
 		}
 	}
 
 	private void drawMenu() {
 		for (int x = 0; x < 12; x++) {
 			for (int y = 0; y < 16; y++) {
-				batch.draw(menuBackgroundImage, x * locationScale + screenSizeY, y * locationScale, 16 * textureScale, 16 * textureScale);
+				batch.draw(menuBackgroundImage, x * locationScale + screenSizeY, y * locationScale, scaledTextureSize, scaledTextureSize);
 			}
 		}
 		Tower tower = menu.getHeldTower();

@@ -17,11 +17,11 @@ public class Input {
   private boolean isHeld = false;
 
   public Input(int screenSizeX, int screenSizeY, float locationScale, GameLogic gameLogic, Menu menu) {
-      this.screenSizeX = screenSizeX;
-      this.screenSizeY = screenSizeY;
-      this.locationScale = locationScale;
-      this.gameLogic = gameLogic;
-      this.menu = menu;
+    this.screenSizeX = screenSizeX;
+    this.screenSizeY = screenSizeY;
+    this.locationScale = locationScale;
+    this.gameLogic = gameLogic;
+    this.menu = menu;
   }
 
   public void handleInput() {
@@ -38,13 +38,13 @@ public class Input {
 
       isHeld = true;
     } else {
-        if (isHeld) {
-          if (x < 16 && menu.getHeldTower() != null) {
-            gameLogic.spawnTower(TowerFactory.newTower(menu.getHeldTower().getType(), x, y));
-          }
+      if (isHeld) {
+        if (x < 16 && menu.getHeldTower() != null) {
+          gameLogic.spawnTower(TowerFactory.newTower(menu.getHeldTower().getType(), x, y));
         }
-        menu.unheld();
-        isHeld = false;
+      }
+      menu.unheld();
+      isHeld = false;
     }
 
   }
