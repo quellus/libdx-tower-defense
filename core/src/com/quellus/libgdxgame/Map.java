@@ -8,19 +8,19 @@ import com.badlogic.gdx.Application;
 
 public class Map {
 
-  private Coordinate<Integer>[] mapTiles;
+	private Coordinate<Integer>[] mapTiles;
 
-  public Map (String filename) {
+	public Map (String filename) {
 		FileHandle mapFile = Gdx.files.internal(filename);
-    parseMap(mapFile);
+		parseMap(mapFile);
 		debugMap(mapTiles);
-  }
+	}
 
-  public Coordinate<Integer>[] getMapTiles() {
-      return mapTiles;
-  }
+	public Coordinate<Integer>[] getMapTiles() {
+			return mapTiles;
+	}
 
-  private boolean parseMap(FileHandle file) {
+	private boolean parseMap(FileHandle file) {
 		String fileString = file.readString();
 		String[] lines = fileString.split("\\r?\\n");
 		ArrayList<Coordinate<Integer>> coordList = new ArrayList<Coordinate<Integer>>();

@@ -13,21 +13,27 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import com.quellus.libgdxgame.GameLogic;
 import com.quellus.libgdxgame.Game;
+import com.quellus.libgdxgame.Menu;
 import com.quellus.libgdxgame.entities.Enemy;
+import com.quellus.libgdxgame.entities.Entity;
 import com.quellus.libgdxgame.entities.towers.Tower;
 import com.quellus.libgdxgame.entities.projectiles.Projectile;
 
 public class BasicLibgdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
+	Texture menuBackgroundImage;
 	Texture enemyImage;
 	Texture bulletImage;
 	Texture towerTurretImage;
 	Texture towerLauncherImage;
 	Texture mapTileImage;
 	Texture mapPathImage;
+	Menu menu;
 	Game game;
 	GameLogic gameLogic;
+	Input input;
 	int screenSizeY;
+	int screenSizeX;
 
 	private float textureScale;
 	private float locationScale;
@@ -35,14 +41,18 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 	
 	@Override
 	public void create() {
-		FileHandle mapFile = Gdx.files.internal("basic-map.txt");
-		game = new Game("basic-map.txt");
-		gameLogic = new GameLogic(game);
 		screenSizeY = Gdx.graphics.getHeight();
+		screenSizeX = Gdx.graphics.getWidth();
 		textureScale = screenSizeY / 256f;
 		locationScale = screenSizeY / 16f;
+		FileHandle mapFile = Gdx.files.internal("basic-map.txt");
+		menu = new Menu();
+		game = new Game("basic-map.txt");
+		gameLogic = new GameLogic(game);
+		input = new Input(screenSizeX, screenSizeY, locationScale, gameLogic, menu);
 		locationOffset = 6f / 16f; //TODO change this it is one pixel off on android
 		batch = new SpriteBatch();
+		menuBackgroundImage = new Texture("menu-background.png");
 		enemyImage = new Texture("enemy.png");
 		bulletImage = new Texture("bullet.png");
 		towerTurretImage = new Texture("basic-tower.png");
@@ -56,10 +66,11 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		handleInput();
+		input.handleInput();
 		gameLogic.update();
 		drawMapTiles();
 		drawMapPath();
+		drawMenu();
 		drawEnemies();
 		drawTowers();
 		drawProjectiles();
@@ -70,6 +81,8 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 	public void dispose() {
 		batch.dispose();
 	}
+
+
 
 	private void drawMapTiles() {
 		for (int x = 0; x < 16; x++) {
@@ -85,6 +98,23 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 			int x = map[i].getX();
 			int y = map[i].getY();
 			batch.draw(mapPathImage, x * locationScale, y * locationScale, 16 * textureScale, 16 * textureScale);
+		}
+	}
+
+	private void drawMenu() {
+		for (int x = 0; x < 12; x++) {
+			for (int y = 0; y < 16; y++) {
+				batch.draw(menuBackgroundImage, x * locationScale + screenSizeY, y * locationScale, 16 * textureScale, 16 * textureScale);
+			}
+		}
+		Tower tower = menu.getHeldTower();
+		if (tower != null) {
+			drawTower(tower);
+		}
+		Tower[] menuItems = menu.getMenuItems();
+		for (int i = 0; i < menuItems.length; i++) {
+			Tower item = menuItems[i];
+			drawTower(item);
 		}
 	}
 
@@ -104,13 +134,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		ArrayList<Tower> towers = game.getTowers();
 		for (int i = 0; i < towers.size(); i++) {
 			Tower towerObj = towers.get(i);
-			Texture towerImage = towerTurretImage;
-
-			Sprite towerSprite = new Sprite(towerImage, 16, 16);
-			towerSprite.setScale(textureScale);
-			towerSprite.setPosition((towerObj.getLocationX() + locationOffset) * locationScale , (towerObj.getLocationY() + locationOffset) *  locationScale);
-			towerSprite.setRotation(towerObj.getRotation());
-			towerSprite.draw(batch);
+			drawTower(towerObj);
 		}
 	}
 
@@ -126,19 +150,22 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		}
 	}
 
-	private void handleInput() {
-		if (Gdx.input.justTouched()) {
-			int x = Gdx.input.getX();
-			int y = screenSizeY - Gdx.input.getY();
-			x = inputToMapCoords(x);
-			y = inputToMapCoords(y);
-			gameLogic.spawnTowerAt(x, y);
+	private void drawTower(Tower towerObj) {
+		Texture towerImage = null;
+		switch(towerObj.getType()) {
+			case TURRET:
+				towerImage = towerTurretImage;
+				break;
+			case LAUNCHER:
+				towerImage = towerLauncherImage;
+				break;
 		}
-	}
 
-	private int inputToMapCoords(int coord) {
-		coord = (int) (coord / locationScale);
-		return coord;
+		Sprite towerSprite = new Sprite(towerImage, 16, 16);
+		towerSprite.setScale(textureScale);
+		towerSprite.setPosition((towerObj.getLocationX() + locationOffset) * locationScale , (towerObj.getLocationY() + locationOffset) *  locationScale);
+		towerSprite.setRotation(towerObj.getRotation());
+		towerSprite.draw(batch);
 	}
 
 }

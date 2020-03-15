@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.quellus.libgdxgame.entities.Entity;
 import com.quellus.libgdxgame.entities.Enemy;
+import com.quellus.libgdxgame.entities.towers.TowerEnum;
 import com.quellus.libgdxgame.entities.projectiles.Projectile;
 
 public abstract class Tower extends Entity {
@@ -12,6 +13,7 @@ public abstract class Tower extends Entity {
 	protected int damage = 1;
 	protected int cooldown = 10;
 	protected int currentCooldown = 0;
+	protected TowerEnum type = null;
 
 	public Tower(int x, int y) {
 		locationX = x;
@@ -40,6 +42,10 @@ public abstract class Tower extends Entity {
 		double angleRadians = Math.atan(value);
 		double angleDegrees = Math.toDegrees(angleRadians);
 		rotation += (int) Math.floor(angleDegrees);
+	}
+
+	public TowerEnum getType() {
+		return type;
 	}
 
 	public int getDamage() {

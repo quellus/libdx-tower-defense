@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 import com.quellus.libgdxgame.Game;
 import com.quellus.libgdxgame.entities.towers.Tower;
-import com.quellus.libgdxgame.entities.towers.TurretTower;
+import com.quellus.libgdxgame.entities.towers.TowerEnum;
+import com.quellus.libgdxgame.entities.towers.TowerFactory;
 import com.quellus.libgdxgame.entities.projectiles.Projectile;
 import com.quellus.libgdxgame.entities.Enemy;
 import com.quellus.libgdxgame.entities.Entity;
@@ -27,19 +28,19 @@ public class GameLogic {
 		moveAndAttackProjectiles();
 	}
 
-	public void spawnTowerAt(int x, int y) {
-		if (isPathAt(x, y)) {
+	public void spawnTower(Tower tower) {
+		if (isPathAt((int) tower.getLocationX(), (int) tower.getLocationY())) {
 			System.out.println("There's path there!");
 			return;
 		}
 
 
-		if (isTowerAt(x, y)) {
+		if (isTowerAt((int) tower.getLocationX(), (int) tower.getLocationY())) {
 			System.out.println("Tower already exists!");
 			return;
 		}
 
-		game.addTower(new TurretTower(x, y));
+		game.addTower(tower);
 	}
 
 	private boolean isPathAt(int x, int y) {

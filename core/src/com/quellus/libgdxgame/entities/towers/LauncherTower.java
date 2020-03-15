@@ -5,11 +5,11 @@ import com.quellus.libgdxgame.entities.towers.TowerEnum;
 import com.quellus.libgdxgame.entities.Enemy;
 import com.quellus.libgdxgame.entities.projectiles.Projectile;
 
-public class TurretTower extends Tower {
+public class LauncherTower extends Tower {
 
-	public TurretTower(int x, int y) {
+	public LauncherTower(int x, int y) {
 		super(x, y);
-		type = TowerEnum.TURRET;
+		type = TowerEnum.LAUNCHER;
 	}
 
 	public Projectile attack(Enemy enemy) {
