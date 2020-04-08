@@ -61,12 +61,11 @@ public class Enemy extends Entity {
 	}
 
 	public void attack(int damage) {
-		if (health > 0) {
-			health -= damage;
-		} else {
+		health -= damage;
+		if (health <= 0) {
 			isDead = true;
 		}
-		
+			
 	}
 
 	private void moveAndRotateTowards(int targetX, int targetY) {

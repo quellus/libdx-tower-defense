@@ -18,12 +18,15 @@ import com.quellus.libgdxgame.entities.Enemy;
 import com.quellus.libgdxgame.entities.Entity;
 import com.quellus.libgdxgame.entities.towers.Tower;
 import com.quellus.libgdxgame.entities.projectiles.Projectile;
+import com.quellus.libgdxgame.entities.projectiles.Bullet;
+import com.quellus.libgdxgame.entities.projectiles.Explosive;
 
 public class BasicLibgdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture menuBackgroundImage;
 	Texture enemyImage;
 	Texture bulletImage;
+	Texture explosiveImage;
 	Texture towerTurretImage;
 	Texture towerLauncherImage;
 	Texture mapTileImage;
@@ -59,6 +62,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		menuBackgroundImage = new Texture("menu-background.png");
 		enemyImage = new Texture("enemy.png");
 		bulletImage = new Texture("bullet.png");
+		explosiveImage = new Texture("explosive.png");
 		towerTurretImage = new Texture("basic-tower.png");
 		towerLauncherImage = new Texture("launcher-tower.png");
 		mapTileImage = new Texture("map-tile.png");
@@ -85,8 +89,6 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 	public void dispose() {
 		batch.dispose();
 	}
-
-
 
 	private void drawMapTiles() {
 		for (int x = 0; x < 16; x++) {
@@ -126,11 +128,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		ArrayList<Enemy> enemies = game.getEnemies();
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemyObj = enemies.get(i);
-			Sprite enemySprite = new Sprite(enemyImage, 16, 16);
-			enemySprite.setScale(textureScale);
-			enemySprite.setRotation(enemyObj.getRotation());
-			enemySprite.setPosition((enemyObj.getLocationX() + locationOffset) * locationScale, (enemyObj.getLocationY() + locationOffset) *  locationScale);
-			enemySprite.draw(batch);
+			drawEntity(enemyImage, enemyObj);
 		}
 	}
 
@@ -148,6 +146,7 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 		bulletSprite.setScale(textureScale);
 		for (int i = 0; i < projectiles.size(); i++) {
 			Projectile projectile = projectiles.get(i);
+			drawProjectile(projectile);
 			bulletSprite.setPosition((projectile.getLocationX() + locationOffset) * locationScale , (projectile.getLocationY() + locationOffset) *  locationScale);
 			bulletSprite.setRotation(projectile.getRotation());
 			bulletSprite.draw(batch);
@@ -165,11 +164,28 @@ public class BasicLibgdxGame extends ApplicationAdapter {
 				break;
 		}
 
-		Sprite towerSprite = new Sprite(towerImage, 16, 16);
-		towerSprite.setScale(textureScale);
-		towerSprite.setPosition((towerObj.getLocationX() + locationOffset) * locationScale , (towerObj.getLocationY() + locationOffset) *  locationScale);
-		towerSprite.setRotation(towerObj.getRotation());
-		towerSprite.draw(batch);
+		drawEntity(towerImage, towerObj);
+	}
+
+	private void drawProjectile(Projectile projectile) {
+		Texture projectileImage = null;
+		if (projectile instanceof Bullet) {
+			projectileImage = bulletImage;
+		} else if (projectile instanceof Explosive) {
+			projectileImage = explosiveImage;
+		} else {
+			return;
+		}
+
+		drawEntity(projectileImage, projectile);
+	}
+
+	private void drawEntity(Texture texture, Entity entity) {
+		Sprite projectileSprite = new Sprite(texture, 16, 16);
+		projectileSprite.setScale(textureScale);
+		projectileSprite.setPosition((entity.getLocationX() + locationOffset) * locationScale , (entity.getLocationY() + locationOffset) *  locationScale);
+		projectileSprite.setRotation(entity.getRotation());
+		projectileSprite.draw(batch);
 	}
 
 }

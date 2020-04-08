@@ -6,6 +6,8 @@ import com.quellus.libgdxgame.Game;
 import com.quellus.libgdxgame.entities.towers.Tower;
 import com.quellus.libgdxgame.entities.towers.TowerEnum;
 import com.quellus.libgdxgame.entities.towers.TowerFactory;
+import com.quellus.libgdxgame.entities.projectiles.Bullet;
+import com.quellus.libgdxgame.entities.projectiles.Explosive;
 import com.quellus.libgdxgame.entities.projectiles.Projectile;
 import com.quellus.libgdxgame.entities.Enemy;
 import com.quellus.libgdxgame.entities.Entity;
@@ -100,17 +102,41 @@ public class GameLogic {
 		if (projectiles.size() > 0) {
 			for (int i = 0; i < projectiles.size(); i++) {
 				Projectile projectile = projectiles.get(i);
-				if (projectile.isTargetDead()) {
-					game.removeProjectile(projectile);
-				} else {
-					if (projectile.isCollisionWithTarget()) {
-						projectile.getTarget().attack(projectile.getDamage());
-						game.removeProjectile(projectile);
-					} else {
-						projectile.move();
-					}
+				if (projectile instanceof Bullet) {
+					moveAndAttackBullet((Bullet) projectile);
+				} else if (projectile instanceof Explosive) {
+					moveAndAttackExplosive((Explosive) projectile);
 				}
 			}
+		}
+	}
+
+	private void moveAndAttackBullet(Bullet bullet) {
+		if (bullet.isTargetDead()) {
+			game.removeProjectile(bullet);
+		} else {
+			if (bullet.isCollisionWithTarget()) {
+					bullet.getTarget().attack(bullet.getDamage());
+				game.removeProjectile(bullet);
+			} else {
+				bullet.move();
+			}
+		}
+	}
+
+	private void moveAndAttackExplosive(Explosive explosive) {
+		if (explosive.isCollisionWithTarget()) {
+			ArrayList<Enemy> enemies = game.getEnemies();
+			for (int i = 0; i < enemies.size(); i++) {
+				Enemy enemy = enemies.get(i);
+				float distance = getEuclideanDistance(explosive, enemy);
+				if (distance <= explosive.getExplosionRadius()) {
+					enemy.attack(explosive.getDamage());
+				}
+			}
+			game.removeProjectile(explosive);
+		} else {
+			explosive.move();
 		}
 	}
 
