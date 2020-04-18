@@ -1,44 +1,45 @@
 # libgdx-tower-defense
 
-A basic tower defense game build in LibGDX
+A basic tower defense game built in LibGDX
 
 ## What is this?
 
-This is your run of the mill tower defense game. It does not really have any
-features that make it defense from any other tower defense game.
+This is just a basic tower defense game. It's not very different from any other
+tower defense game out there.
 
 ## Why?
 
-Two reasons:
-1. I want to learn more about game development, game engines, and graphics.
-2. There's a surprising lack of tower defense games on the F-Droid store and I
-   want to fix that.
+This was created for two reasons:
+1. To learn more about game development, game engines, and graphics.
+2. There seems a surprising lack of tower defense games on the F-Droid store.
    
 ## Platforms
 
-* Linux
+* GNU+Linux
+* Android
 * Windows
-* Android (Coming soon!)
 
 There's a potential for any of the other platforms LibGDX supports, but
 Desktop and Android are the focus.
 
 ## Is it playable?
 
-No, it's in the very early stages of infancy. It's riddled with bugs and lacking
+Not really, it's in the very early stages of infancy. It's riddled with bugs and lacking
 a lot of very important features.
 
 ## How do I build/run it?
 
 ### Dependencies
-* Java
+* Java (1.8)
 * Gradle
 * LibGDX
+* Android SDK
 
 ### Commands
-On Linux you would use this command to run the desktop version:
+
+To build and run on **Linux** or **Windows**:
 `./gradlew desktop:run`
 
-When an Android version is added the following command will build that:
-`./gradlew android:run`
+To build and install for **Android***:
+`./gradlew installDebug`
 
