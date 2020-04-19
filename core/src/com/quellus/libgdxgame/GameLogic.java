@@ -87,11 +87,13 @@ public class GameLogic {
 			ArrayList<Tower> towers = game.getTowers();
 			for (int i = 0; i < towers.size(); i++) {
 				Tower towerObj = towers.get(i);
-				Enemy closestEnemy = getClosestEnemy(towerObj);
-				towerObj.rotate(closestEnemy);
-				Projectile projectile = towerObj.attack(closestEnemy);
-				if (projectile != null) {
-					game.addProjectile(projectile);
+				Enemy closestEnemy = getClosestEnemyInRadius(towerObj);
+				if (closestEnemy != null) {
+					towerObj.rotate(closestEnemy);
+					Projectile projectile = towerObj.attack(closestEnemy);
+					if (projectile != null) {
+						game.addProjectile(projectile);
+					}
 				}
 			}
 		}
@@ -149,20 +151,22 @@ public class GameLogic {
 		}
 	}
 
-	private Enemy getClosestEnemy(Tower tower) {
+	private Enemy getClosestEnemyInRadius(Tower tower) {
 		Enemy closestEnemy = null;
 		float closestDist = Float.MAX_VALUE;
 		ArrayList<Enemy> enemies = game.getEnemies();
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemy = enemies.get(i);
-			if (closestEnemy == null) {
-				closestEnemy = enemy;
-				closestDist = getEuclideanDistance(enemy, tower);
-			} else {
-				float enemyDist = getEuclideanDistance(enemy, tower);
-				if (enemyDist < closestDist) {
+			float enemyDist = getEuclideanDistance(enemy, tower);
+			if (enemyDist <= tower.getRange()) {
+				if (closestEnemy == null) {
 					closestEnemy = enemy;
 					closestDist = enemyDist;
+				} else {
+					if (enemyDist < closestDist) {
+						closestEnemy = enemy;
+						closestDist = enemyDist;
+					}
 				}
 			}
 		}
