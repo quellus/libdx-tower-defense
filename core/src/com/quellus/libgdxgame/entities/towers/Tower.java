@@ -11,16 +11,38 @@ import com.quellus.libgdxgame.entities.projectiles.Projectile;
 public abstract class Tower extends Entity {
 
 	protected int damage = 1;
+	protected float range;
 	protected int cooldown = 10;
 	protected int currentCooldown = 0;
 	protected TowerEnum type = null;
 
-	public Tower(int x, int y) {
+	public Tower(int x, int y, float range) {
 		locationX = x;
 		locationY = y;
+		this.range = range;
 	}
 
 	public abstract Projectile attack(Enemy enemy);
+
+	public float getRange() {
+		return range;
+	}
+
+	public TowerEnum getType() {
+		return type;
+	}
+
+	public int getDamage() {
+		return damage;
+	}
+
+	public void updateCooldown() {
+		if (currentCooldown >= 0) {
+			currentCooldown--;
+		} else if (currentCooldown < 0) {
+			currentCooldown = cooldown;
+		}
+	}
 
 	public void rotate(Enemy enemy) {
 		double diffX = locationX - enemy.getLocationX();
@@ -42,22 +64,6 @@ public abstract class Tower extends Entity {
 		double angleRadians = Math.atan(value);
 		double angleDegrees = Math.toDegrees(angleRadians);
 		rotation += (int) Math.floor(angleDegrees);
-	}
-
-	public TowerEnum getType() {
-		return type;
-	}
-
-	public int getDamage() {
-		return damage;
-	}
-
-	public void updateCooldown() {
-		if (currentCooldown >= 0) {
-			currentCooldown--;
-		} else if (currentCooldown < 0) {
-			currentCooldown = cooldown;
-		}
 	}
 
 }
