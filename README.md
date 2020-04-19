@@ -9,9 +9,9 @@ tower defense game out there.
 
 ## Why?
 
-This was created for two reasons:
-1. To learn more about game development, game engines, and graphics.
-2. There seems a surprising lack of tower defense games on the F-Droid store.
+This was created for two reasons:  
+1. To learn more about game development, game engines, and graphics.  
+2. There seems a surprising lack of tower defense games on the F-Droid store.  
    
 ## Platforms
 
@@ -36,10 +36,16 @@ a lot of very important features.
 * Android SDK
 
 ### Commands
+**Linux** and **Windows**:  
+*build:* `./gradlew desktop:run`  
+*run:* `./gradlew desktop:run`  
 
-To build and run on **Linux** or **Windows**:
-`./gradlew desktop:run`
+**Android**:  
+* First download the SDK [command line tools](https://developer.android.com/studio#downloads) and place them in `/home/<user>/Android/Sdk/tools`  
+* Then set the ANDROID_HOME environment variable `export ANDROID_HOME=/home/<user>/Android/Sdk`  
 
-To build and install for **Android***:
-`./gradlew installDebug`
+**build:** `./gradlew android:assembleDebug`  
+**run:** `./gradlew installDebug`  
 
+#### Troubleshooting
+**License error:** run `~/Android/Sdk/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --licenses`
