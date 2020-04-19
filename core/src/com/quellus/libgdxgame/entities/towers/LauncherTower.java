@@ -9,7 +9,7 @@ import com.quellus.libgdxgame.entities.projectiles.Projectile;
 public class LauncherTower extends Tower {
 
 	public LauncherTower(int x, int y) {
-		super(x, y);
+		super(x, y, 3.2f);
 		type = TowerEnum.LAUNCHER;
 		cooldown = 75;
 		damage = 5;
