@@ -49,6 +49,7 @@ public class CameraGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		//Gdx.gl.glViewport(0, 0, Gdx.graphics.getHeight(), Gdx.graphics.getHeight());
+		batch.setProjectionMatrix(vp.getCamera().combined);
 		batch.begin();
 		drawMap();
 		//Sprite sprite = new Sprite(mapTexture, 16, 16);
