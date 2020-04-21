@@ -31,6 +31,7 @@ public class CameraGame extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private Viewport vp;
 	private Texture mapTexture;
+	private Texture pathTexture;
 
 	@Override
 	public void create() {
@@ -39,6 +40,7 @@ public class CameraGame extends ApplicationAdapter {
 		vp.apply();
 		batch = new SpriteBatch();
 		mapTexture = new Texture("map-tile.png");
+		pathTexture = new Texture("map-path.png");
 	}
 
 	@Override
@@ -46,8 +48,18 @@ public class CameraGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.setProjectionMatrix(vp.getCamera().combined);
+
 		batch.begin();
+
 		drawMap();
+
+		if (Gdx.input.isTouched(0)) {
+			int x = Gdx.input.getX();
+			int y = Gdx.input.getY(); // input Y is backwards so convert it
+			Gdx.app.log("Test", "Mouse click at (" + x + "," + y + ")");
+
+			// TODO draw pathTexture at the clicked location
+		}
 		batch.end();
 		camera.update();
 	}
