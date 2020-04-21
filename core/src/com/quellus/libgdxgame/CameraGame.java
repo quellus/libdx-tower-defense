@@ -35,27 +35,19 @@ public class CameraGame extends ApplicationAdapter {
 	@Override
 	public void create() {
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		//vp = new ScalingViewport(Scaling.stretch, Gdx.graphics.getHeight(), Gdx.graphics.getWidth(), camera);
-		vp = new ScalingViewport(Scaling.stretch, 256f, 256f, camera);
-		//vp = new ScreenViewport(camera);
+		vp = new ScalingViewport(Scaling.fit, 256f, 256f, camera);
 		vp.apply();
 		batch = new SpriteBatch();
 		mapTexture = new Texture("map-tile.png");
-		//camera.position.set(camera.viewportWidth/2,camera.viewportHeight/2,0);
 	}
 
 	@Override
 	public void render() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		//Gdx.gl.glViewport(0, 0, Gdx.graphics.getHeight(), Gdx.graphics.getHeight());
 		batch.setProjectionMatrix(vp.getCamera().combined);
 		batch.begin();
 		drawMap();
-		//Sprite sprite = new Sprite(mapTexture, 16, 16);
-		//sprite.setScale(2);
-		//sprite.setPosition(Gdx.graphics.getWidth() - 16, Gdx.graphics.getHeight() - 16);
-		//sprite.draw(batch);
 		batch.end();
 		camera.update();
 	}
@@ -74,8 +66,6 @@ public class CameraGame extends ApplicationAdapter {
 		for (int x = 0; x < 16; x++) {
 			for (int y = 0; y < 16; y++) {
 				Sprite projectileSprite = new Sprite(mapTexture, 16, 16);
-				//projectileSprite.setScale(2);
-				//projectileSprite.setPosition(x * 2 * 16, y * 2 * 16);
 				projectileSprite.setPosition(x * 16, y * 16);
 				projectileSprite.draw(batch);
 			}
