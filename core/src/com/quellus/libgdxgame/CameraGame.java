@@ -9,11 +9,11 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Scaling;
 
 import com.quellus.libgdxgame.GameLogic;
@@ -27,38 +27,60 @@ import com.quellus.libgdxgame.entities.projectiles.Bullet;
 import com.quellus.libgdxgame.entities.projectiles.Explosive;
 
 public class CameraGame extends ApplicationAdapter {
-	private SpriteBatch batch;
-	private OrthographicCamera camera;
-	private Viewport vp;
 	private Texture mapTexture;
 	private Texture pathTexture;
+	private Texture enemyTexture;
+
+	private SpriteBatch batch;
+	private OrthographicCamera camera;
+	private Viewport viewport;
+
+	private Menu menu;
+	private Game game;
+	private GameLogic gameLogic;
+
+	private float mapSize = 256f;
+	private int textureSize = 16;
 
 	@Override
 	public void create() {
+		loadTextures();
+
+		menu = new Menu();
+		game = new Game("basic-map.txt");
+		gameLogic = new GameLogic(game);
+
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		vp = new ScalingViewport(Scaling.fit, 256f, 256f, camera);
-		vp.apply();
+		viewport = new ScalingViewport(Scaling.fit, mapSize, mapSize, camera);
+		viewport.apply();
+
 		batch = new SpriteBatch();
-		mapTexture = new Texture("map-tile.png");
-		pathTexture = new Texture("map-path.png");
 	}
 
 	@Override
 	public void render() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.setProjectionMatrix(vp.getCamera().combined);
+		batch.setProjectionMatrix(viewport.getCamera().combined);
 
 		batch.begin();
 
-		drawMap();
+		gameLogic.update();
+
+		drawMapTiles();
+		drawMapPath();
+
+		drawEnemies();
 
 		if (Gdx.input.isTouched(0)) {
-			int x = Gdx.input.getX();
-			int y = Gdx.input.getY(); // input Y is backwards so convert it
+			Ray ray = viewport.getPickRay(Gdx.input.getX(), Gdx.input.getY());
+			int x = (int) (ray.origin.x / 16f);
+			int y = (int) (ray.origin.y / 16f);
 			Gdx.app.log("Test", "Mouse click at (" + x + "," + y + ")");
 
-			// TODO draw pathTexture at the clicked location
+			Sprite sprite = new Sprite(pathTexture, 16, 16);
+			sprite.setPosition(x * 16, y * 16);
+			sprite.draw(batch);
 		}
 		batch.end();
 		camera.update();
@@ -66,7 +88,7 @@ public class CameraGame extends ApplicationAdapter {
 
 	@Override
 	public void resize(int width, int height) {
-		vp.update(width, height, true);
+		viewport.update(width, height, true);
 	}
 
 	@Override
@@ -74,14 +96,47 @@ public class CameraGame extends ApplicationAdapter {
 		batch.dispose();
 	}
 
-	public void drawMap() {
+	private void loadTextures() {
+		mapTexture = new Texture("map-tile.png");
+		pathTexture = new Texture("map-path.png");
+		enemyTexture = new Texture("enemy.png");
+	}
+
+	private void drawMapTiles() {
 		for (int x = 0; x < 16; x++) {
 			for (int y = 0; y < 16; y++) {
-				Sprite projectileSprite = new Sprite(mapTexture, 16, 16);
-				projectileSprite.setPosition(x * 16, y * 16);
-				projectileSprite.draw(batch);
+				Sprite sprite = new Sprite(mapTexture, textureSize, textureSize);
+				sprite.setPosition(x * textureSize, y * textureSize);
+				sprite.draw(batch);
 			}
 		}
 	}
+
+	private void drawMapPath() {
+		Coordinate<Integer>[] map = game.getMap();
+		for (int i = 0; i < map.length; i++) {
+			int x = map[i].getX();
+			int y = map[i].getY();
+			Sprite sprite = new Sprite(pathTexture, textureSize, textureSize);
+			sprite.setPosition(x * textureSize, y * textureSize);
+			sprite.draw(batch);
+		}
+	}
+
+	private void drawEnemies() {
+		ArrayList<Enemy> enemies = game.getEnemies();
+		for (int i = 0; i < enemies.size(); i++) {
+			Enemy enemyObj = enemies.get(i);
+			drawEntity(enemyTexture, enemyObj);
+		}
+	}
+
+	private void drawEntity(Texture texture, Entity entity) {
+		Sprite projectileSprite = new Sprite(texture, textureSize, textureSize);
+		projectileSprite.setPosition(entity.getLocationX() * textureSize, entity.getLocationY() * textureSize);
+		projectileSprite.setRotation(entity.getRotation());
+		projectileSprite.draw(batch);
+	}
+
 }
 
