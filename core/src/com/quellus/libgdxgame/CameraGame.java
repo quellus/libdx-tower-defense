@@ -27,9 +27,14 @@ import com.quellus.libgdxgame.entities.projectiles.Bullet;
 import com.quellus.libgdxgame.entities.projectiles.Explosive;
 
 public class CameraGame extends ApplicationAdapter {
+	private Texture bulletTexture;
+	private Texture enemyTexture;
+	private Texture explosiveTexture;
+	private Texture menuBackgroundTexture;
 	private Texture mapTexture;
 	private Texture pathTexture;
-	private Texture enemyTexture;
+	private Texture towerTurretTexture;
+	private Texture towerLauncherTexture;
 
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
@@ -38,8 +43,10 @@ public class CameraGame extends ApplicationAdapter {
 	private Menu menu;
 	private Game game;
 	private GameLogic gameLogic;
+	private Input input;
 
 	private float mapSize = 256f;
+	private float viewSize = 28 * 16;
 	private int textureSize = 16;
 
 	@Override
@@ -49,9 +56,10 @@ public class CameraGame extends ApplicationAdapter {
 		menu = new Menu();
 		game = new Game("basic-map.txt");
 		gameLogic = new GameLogic(game);
+		input = new Input(gameLogic, menu);
 
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		viewport = new ScalingViewport(Scaling.fit, mapSize, mapSize, camera);
+		viewport = new ScalingViewport(Scaling.fit, viewSize, mapSize, camera);
 		viewport.apply();
 
 		batch = new SpriteBatch();
@@ -65,23 +73,27 @@ public class CameraGame extends ApplicationAdapter {
 
 		batch.begin();
 
-		gameLogic.update();
-
-		drawMapTiles();
-		drawMapPath();
-
-		drawEnemies();
-
 		if (Gdx.input.isTouched(0)) {
 			Ray ray = viewport.getPickRay(Gdx.input.getX(), Gdx.input.getY());
 			int x = (int) (ray.origin.x / 16f);
 			int y = (int) (ray.origin.y / 16f);
-			Gdx.app.log("Test", "Mouse click at (" + x + "," + y + ")");
-
-			Sprite sprite = new Sprite(pathTexture, 16, 16);
-			sprite.setPosition(x * 16, y * 16);
-			sprite.draw(batch);
+			input.handleInput(x, y);
+		} else {
+			Ray ray = viewport.getPickRay(Gdx.input.getX(), Gdx.input.getY());
+			int x = (int) (ray.origin.x / 16f);
+			int y = (int) (ray.origin.y / 16f);
+			input.noInput(x, y);
 		}
+
+		gameLogic.update();
+
+		drawMapTiles();
+		drawMapPath();
+		drawMenu();
+		drawEnemies();
+		drawTowers();
+		drawProjectiles();
+
 		batch.end();
 		camera.update();
 	}
@@ -97,9 +109,14 @@ public class CameraGame extends ApplicationAdapter {
 	}
 
 	private void loadTextures() {
+		bulletTexture = new Texture("bullet.png");
 		mapTexture = new Texture("map-tile.png");
-		pathTexture = new Texture("map-path.png");
 		enemyTexture = new Texture("enemy.png");
+		explosiveTexture = new Texture("explosive.png");
+		menuBackgroundTexture = new Texture("menu-background.png");
+		pathTexture = new Texture("map-path.png");
+		towerTurretTexture = new Texture("basic-tower.png");
+		towerLauncherTexture = new Texture("launcher-tower.png");
 	}
 
 	private void drawMapTiles() {
@@ -123,6 +140,23 @@ public class CameraGame extends ApplicationAdapter {
 		}
 	}
 
+	private void drawMenu() {
+		for (int x = 0; x < 12; x++) {
+			for (int y = 0; y < 16; y++) {
+				batch.draw(menuBackgroundTexture, mapSize + x * textureSize, y * textureSize, textureSize, textureSize);
+			}
+		}
+		Tower tower = menu.getHeldTower();
+		if (tower != null) {
+			drawTower(tower);
+		}
+		Tower[] menuItems = menu.getMenuItems();
+		for (int i = 0; i < menuItems.length; i++) {
+			Tower item = menuItems[i];
+			drawTower(item);
+		}
+	}
+
 	private void drawEnemies() {
 		ArrayList<Enemy> enemies = game.getEnemies();
 		for (int i = 0; i < enemies.size(); i++) {
@@ -130,6 +164,54 @@ public class CameraGame extends ApplicationAdapter {
 			drawEntity(enemyTexture, enemyObj);
 		}
 	}
+
+	private void drawTowers() {
+		ArrayList<Tower> towers = game.getTowers();
+		for (int i = 0; i < towers.size(); i++) {
+			Tower towerObj = towers.get(i);
+			drawTower(towerObj);
+		}
+	}
+
+	private void drawProjectiles() {
+		ArrayList<Projectile> projectiles = game.getProjectiles();
+		Sprite bulletSprite = new Sprite(bulletTexture, 16, 16);
+		for (int i = 0; i < projectiles.size(); i++) {
+			Projectile projectile = projectiles.get(i);
+			drawProjectile(projectile);
+			bulletSprite.setPosition(projectile.getLocationX() * textureSize , projectile.getLocationY() *  textureSize);
+			bulletSprite.setRotation(projectile.getRotation());
+			bulletSprite.draw(batch);
+		}
+	}
+
+	private void drawTower(Tower towerObj) {
+		Texture towerTexture = null;
+		switch(towerObj.getType()) {
+			case TURRET:
+				towerTexture = towerTurretTexture;
+				break;
+			case LAUNCHER:
+				towerTexture = towerLauncherTexture;
+				break;
+		}
+
+		drawEntity(towerTexture, towerObj);
+	}
+
+	private void drawProjectile(Projectile projectile) {
+		Texture projectileTexture = null;
+		if (projectile instanceof Bullet) {
+			projectileTexture = bulletTexture;
+		} else if (projectile instanceof Explosive) {
+			projectileTexture = explosiveTexture;
+		} else {
+			return;
+		}
+
+		drawEntity(projectileTexture, projectile);
+	}
+
 
 	private void drawEntity(Texture texture, Entity entity) {
 		Sprite projectileSprite = new Sprite(texture, textureSize, textureSize);

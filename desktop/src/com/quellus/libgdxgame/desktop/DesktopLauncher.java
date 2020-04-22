@@ -3,7 +3,6 @@ package com.quellus.libgdxgame.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.Gdx;
-import com.quellus.libgdxgame.BasicLibgdxGame;
 import com.quellus.libgdxgame.CameraGame;
 
 public class DesktopLauncher {
@@ -14,7 +13,6 @@ public class DesktopLauncher {
 		config.width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
 		config.height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
 		config.resizable = true;
-		//new LwjglApplication(new BasicLibgdxGame(), config);
 		new LwjglApplication(new CameraGame(), config);
 	}
 
