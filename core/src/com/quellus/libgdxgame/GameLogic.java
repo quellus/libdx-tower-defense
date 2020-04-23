@@ -45,6 +45,16 @@ public class GameLogic {
 		game.addTower(tower);
 	}
 
+	public boolean canBuyTower(Tower tower) {
+		int price = tower.getPrice();
+		return price <= game.getCurrency();
+	}
+
+	public void buyTower(Tower tower) {
+		int price = tower.getPrice();
+		game.spendCurrency(price);
+	}
+
 	private boolean isPathAt(int x, int y) {
 		Coordinate<Integer>[] map = game.getMap();
 		for (int i = 0; i < map.length; i++) {
@@ -76,6 +86,7 @@ public class GameLogic {
 			if (!enemyObj.isDead()) {
 				enemyObj.move();
 			}	else {
+				game.addCurrency(1);
 				game.removeEnemy(enemyObj);
 			}
 		}
