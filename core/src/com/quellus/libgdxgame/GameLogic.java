@@ -94,6 +94,8 @@ public class GameLogic {
 					if (projectile != null) {
 						game.addProjectile(projectile);
 					}
+				} else {
+					towerObj.updateCooldown();
 				}
 			}
 		}

@@ -7,6 +7,7 @@ import com.quellus.libgdxgame.entities.projectiles.Explosive;
 import com.quellus.libgdxgame.entities.projectiles.Projectile;
 
 public class LauncherTower extends Tower {
+	private float explosionRadius = 2.5f;
 
 	public LauncherTower(int x, int y) {
 		super(x, y, 3.2f);
@@ -15,13 +16,8 @@ public class LauncherTower extends Tower {
 		damage = 5;
 	}
 
-	public Projectile attack(Enemy enemy) {
-		boolean canAttack = currentCooldown == 0;
-		updateCooldown();
-		if (canAttack) {
-			return new Explosive(this, enemy, damage, 2.5f);
-		}
-		return null;
+	protected Projectile spawnProjectile(Enemy enemy) {
+			return new Explosive(this, enemy, damage, explosionRadius);
 	}
 
 }

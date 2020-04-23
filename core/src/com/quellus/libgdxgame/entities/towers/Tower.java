@@ -22,8 +22,6 @@ public abstract class Tower extends Entity {
 		this.range = range;
 	}
 
-	public abstract Projectile attack(Enemy enemy);
-
 	public float getRange() {
 		return range;
 	}
@@ -39,8 +37,6 @@ public abstract class Tower extends Entity {
 	public void updateCooldown() {
 		if (currentCooldown >= 0) {
 			currentCooldown--;
-		} else if (currentCooldown < 0) {
-			currentCooldown = cooldown;
 		}
 	}
 
@@ -65,6 +61,18 @@ public abstract class Tower extends Entity {
 		double angleDegrees = Math.toDegrees(angleRadians);
 		rotation += (int) Math.floor(angleDegrees);
 	}
+
+	public Projectile attack(Enemy enemy) {
+		boolean canAttack = currentCooldown < 0;
+		updateCooldown();
+		if (canAttack) {
+			currentCooldown = cooldown;
+			return spawnProjectile(enemy);
+		}
+		return null;
+	}
+
+	protected abstract Projectile spawnProjectile(Enemy enemy);
 
 }
 
