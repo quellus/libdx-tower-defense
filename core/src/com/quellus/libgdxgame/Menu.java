@@ -11,7 +11,7 @@ public class Menu {
   private GameLogic gameLogic;
 
   private Tower[] menuItems = {TowerFactory.newTower(TowerEnum.TURRET, 17, 14), TowerFactory.newTower(TowerEnum.LAUNCHER, 19, 14)};
-  
+
   public Menu(GameLogic gameLogic) {
     this.gameLogic = gameLogic;
   }
@@ -36,8 +36,9 @@ public class Menu {
 
   public void unheld() {
     if (heldTower != null && heldTower.getLocationX() < 16) {
-      gameLogic.buyTower(heldTower);
-      gameLogic.spawnTower(TowerFactory.newTower(heldTower.getType(), (int) heldTower.getLocationX(), (int) heldTower.getLocationY()));
+      if (gameLogic.spawnTower(TowerFactory.newTower(heldTower.getType(), (int) heldTower.getLocationX(), (int) heldTower.getLocationY()))) {
+        gameLogic.buyTower(heldTower);
+      }
     }
     heldTower = null;
   }

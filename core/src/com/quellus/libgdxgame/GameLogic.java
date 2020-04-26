@@ -30,19 +30,20 @@ public class GameLogic {
 		moveAndAttackProjectiles();
 	}
 
-	public void spawnTower(Tower tower) {
+	public boolean spawnTower(Tower tower) {
 		if (isPathAt((int) tower.getLocationX(), (int) tower.getLocationY())) {
 			System.out.println("There's path there!");
-			return;
+			return false;
 		}
 
 
 		if (isTowerAt((int) tower.getLocationX(), (int) tower.getLocationY())) {
 			System.out.println("Tower already exists!");
-			return;
+			return false;
 		}
 
 		game.addTower(tower);
+		return true;
 	}
 
 	public boolean canBuyTower(Tower tower) {
