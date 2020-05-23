@@ -160,6 +160,7 @@ public class CameraGame extends ApplicationAdapter {
 		for (int i = 0; i < menuItems.length; i++) {
 			Tower item = menuItems[i];
 			drawTower(item);
+			font.draw(batch, "" + item.getPrice(), item.getLocationX() * textureSize, item.getLocationY() * textureSize);
 		}
 	}
 
