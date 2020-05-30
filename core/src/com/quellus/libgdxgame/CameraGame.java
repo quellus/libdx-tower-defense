@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Scaling;
 
@@ -39,6 +40,7 @@ public class CameraGame extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	private Viewport viewport;
+	private BitmapFont font;
 
 	private Menu menu;
 	private Game game;
@@ -53,11 +55,12 @@ public class CameraGame extends ApplicationAdapter {
 	public void create() {
 		loadTextures();
 
-		menu = new Menu();
 		game = new Game("basic-map.txt");
 		gameLogic = new GameLogic(game);
-		input = new Input(gameLogic, menu);
+		menu = new Menu(gameLogic);
+		input = new Input(menu);
 
+		font = new BitmapFont();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		viewport = new ScalingViewport(Scaling.fit, viewSize, mapSize, camera);
 		viewport.apply();
@@ -87,12 +90,15 @@ public class CameraGame extends ApplicationAdapter {
 
 		gameLogic.update();
 
+
 		drawMapTiles();
 		drawMapPath();
 		drawMenu();
 		drawEnemies();
 		drawTowers();
 		drawProjectiles();
+
+		font.draw(batch, "" + game.getCurrency(), 300, 20);
 
 		batch.end();
 		camera.update();
@@ -154,6 +160,7 @@ public class CameraGame extends ApplicationAdapter {
 		for (int i = 0; i < menuItems.length; i++) {
 			Tower item = menuItems[i];
 			drawTower(item);
+			font.draw(batch, "" + item.getPrice(), item.getLocationX() * textureSize, item.getLocationY() * textureSize);
 		}
 	}
 

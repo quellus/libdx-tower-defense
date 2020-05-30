@@ -30,19 +30,30 @@ public class GameLogic {
 		moveAndAttackProjectiles();
 	}
 
-	public void spawnTower(Tower tower) {
+	public boolean spawnTower(Tower tower) {
 		if (isPathAt((int) tower.getLocationX(), (int) tower.getLocationY())) {
 			System.out.println("There's path there!");
-			return;
+			return false;
 		}
 
 
 		if (isTowerAt((int) tower.getLocationX(), (int) tower.getLocationY())) {
 			System.out.println("Tower already exists!");
-			return;
+			return false;
 		}
 
 		game.addTower(tower);
+		return true;
+	}
+
+	public boolean canBuyTower(Tower tower) {
+		int price = tower.getPrice();
+		return price <= game.getCurrency();
+	}
+
+	public void buyTower(Tower tower) {
+		int price = tower.getPrice();
+		game.spendCurrency(price);
 	}
 
 	private boolean isPathAt(int x, int y) {
@@ -76,6 +87,7 @@ public class GameLogic {
 			if (!enemyObj.isDead()) {
 				enemyObj.move();
 			}	else {
+				game.addCurrency(1);
 				game.removeEnemy(enemyObj);
 			}
 		}

@@ -13,6 +13,8 @@ public class Game {
 	private ArrayList<Tower> towers = new ArrayList<Tower>();
 	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 
+	private int currency = 100;
+
 	private Map map;
 
 	public Game(String filename) {
@@ -53,6 +55,22 @@ public class Game {
 	
 	public Coordinate<Integer>[] getMap() {
 		return map.getMapTiles();
+	}
+
+	public int getCurrency() {
+		return currency;
+	}
+
+	public void addCurrency(int add) {
+		currency += add;
+	}
+
+	public void spendCurrency(int spend) {
+		if (currency - spend <= 0) {
+			currency = 0;
+		} else {
+			currency -= spend;
+		}
 	}
 
 }
