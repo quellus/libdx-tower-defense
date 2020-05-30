@@ -10,6 +10,7 @@ import com.quellus.libgdxgame.entities.projectiles.Projectile;
 
 public abstract class Tower extends Entity {
 
+	protected int price = 10;
 	protected int damage = 1;
 	protected float range;
 	protected int cooldown = 10;
@@ -20,6 +21,10 @@ public abstract class Tower extends Entity {
 		locationX = x;
 		locationY = y;
 		this.range = range;
+	}
+
+	public int getPrice() {
+		return price;
 	}
 
 	public float getRange() {
