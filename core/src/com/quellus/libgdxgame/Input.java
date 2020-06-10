@@ -9,24 +9,23 @@ import com.quellus.libgdxgame.entities.towers.TowerFactory;
 public class Input {
 
   private Menu menu;
-  private boolean isHeld = false;
+  private boolean isSelected = false;
 
   public Input(Menu menu) {
     this.menu = menu;
   }
 
   public void handleInput(int x, int y) {
-    if (!isHeld) {
-      isHeld = menu.held(x, y);
-      isHeld = true;
+    if (!isSelected) {
+      isSelected = menu.select(x, y);
+      isSelected = true;
     } else {
       menu.drag(x, y);
     }
-
   }
 
   public void noInput(int x, int y) {
-    menu.unheld();
-    isHeld = false;
+    menu.deselect();
+    isSelected = false;
   }
 }
