@@ -24,10 +24,12 @@ public class GameLogic {
 	}
 	
 	public void update() {
-		spawnEnemy();
-		moveEnemies();
-		rotateAndAttackTowers();
-		moveAndAttackProjectiles();
+		if (!game.getIsPaused()) {
+			spawnEnemy();
+			moveEnemies();
+			rotateAndAttackTowers();
+			moveAndAttackProjectiles();
+		}
 	}
 
 	public boolean spawnTower(Tower tower) {
