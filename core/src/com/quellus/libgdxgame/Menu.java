@@ -16,7 +16,7 @@ public class Menu {
     this.gameLogic = gameLogic;
   }
 
-  public boolean select(int x, int y) {
+  public boolean select(float x, float y) {
     for (int i = 0; i < menuItems.length; i++) {
       Tower item = menuItems[i];
       if (item.getLocationX() == x && item.getLocationY() == y && gameLogic.canBuyTower(item)) {
@@ -27,7 +27,7 @@ public class Menu {
     return false;
   }
 
-  public void drag(int x, int y) {
+  public void drag(float x, float y) {
     if (selectedTower != null) {
       selectedTower.setLocationX(x);
       selectedTower.setLocationY(y);

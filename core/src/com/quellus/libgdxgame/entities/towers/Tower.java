@@ -17,7 +17,7 @@ public abstract class Tower extends Entity {
 	protected int currentCooldown = 0;
 	protected TowerEnum type = null;
 
-	public Tower(int x, int y, float range) {
+	public Tower(float x, float y, float range) {
 		locationX = x;
 		locationY = y;
 		this.range = range;

@@ -68,6 +68,7 @@ public class Application extends ApplicationAdapter {
 			int x = (int) (ray.origin.x / 16f);
 			int y = (int) (ray.origin.y / 16f);
 			input.handleInput(x, y);
+			//input.handleInput(ray.origin.x / 16f, ray.origin.y / 16f);
 		} else {
 			Ray ray = viewport.getPickRay(Gdx.input.getX(), Gdx.input.getY());
 			int x = (int) (ray.origin.x / 16f);
@@ -91,5 +92,6 @@ public class Application extends ApplicationAdapter {
 	public void dispose() {
 		batch.dispose();
 	}
+
 }
 
