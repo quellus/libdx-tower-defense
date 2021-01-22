@@ -32,6 +32,10 @@ public class GameLogic {
 		}
 	}
 
+	public void togglePause() {
+		game.setIsPaused(!game.getIsPaused());
+	}
+
 	public boolean spawnTower(Tower tower) {
 		if (isPathAt((int) tower.getLocationX(), (int) tower.getLocationY())) {
 			System.out.println("There's path there!");
