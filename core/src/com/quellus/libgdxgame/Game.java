@@ -14,7 +14,7 @@ public class Game {
 	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 
 	private int currency = 100;
-	private boolean isPaused = false;
+	private boolean isPaused = true;
 
 	private Map map;
 
@@ -52,6 +52,10 @@ public class Game {
 
 	public void removeProjectile(Projectile projectile) {
 		projectiles.remove(projectile);
+	}
+
+	public void clearAllProjectiles() {
+		projectiles.clear();
 	}
 	
 	public Coordinate<Integer>[] getMap() {
