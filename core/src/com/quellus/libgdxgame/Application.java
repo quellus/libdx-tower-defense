@@ -91,5 +91,6 @@ public class Application extends ApplicationAdapter {
 	public void dispose() {
 		batch.dispose();
 	}
+
 }
 

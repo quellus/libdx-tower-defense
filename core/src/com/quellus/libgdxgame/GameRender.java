@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 
+import com.quellus.libgdxgame.entities.MenuItem;
 import com.quellus.libgdxgame.entities.Enemy;
 import com.quellus.libgdxgame.entities.Entity;
 import com.quellus.libgdxgame.entities.towers.Tower;
@@ -23,6 +24,7 @@ public class GameRender {
   private Texture pathTexture;
   private Texture towerTurretTexture;
   private Texture towerLauncherTexture;
+  private Texture pauseTexture;
 
   private BitmapFont font;
 
@@ -57,6 +59,7 @@ public class GameRender {
     pathTexture = new Texture("map-path.png");
     towerTurretTexture = new Texture("basic-tower.png");
     towerLauncherTexture = new Texture("launcher-tower.png");
+    pauseTexture = new Texture("pause.png");
   }
 
   private void drawMapTiles(SpriteBatch batch) {
@@ -95,6 +98,11 @@ public class GameRender {
       Tower item = menuItems[i];
       drawTower(batch, item);
       font.draw(batch, "" + item.getPrice(), item.getLocationX() * textureSize, item.getLocationY() * textureSize);
+    }
+    MenuItem[] menuButtons = menu.getMenuButtons();
+    for (int i = 0; i < menuButtons.length; i++) {
+      MenuItem item = menuButtons[i];
+      drawMenuButton(batch, item);
     }
   }
 
@@ -138,6 +146,17 @@ public class GameRender {
     }
 
     drawEntity(batch, towerTexture, towerObj);
+  }
+
+  private void drawMenuButton(SpriteBatch batch, MenuItem menuButton) {
+    Texture buttonTexture = null;
+    switch(menuButton.getType()) {
+      case PAUSE:
+        buttonTexture = pauseTexture;
+        break;
+    }
+
+    drawEntity(batch, buttonTexture, menuButton);
   }
 
   private void drawProjectile(SpriteBatch batch, Projectile projectile) {

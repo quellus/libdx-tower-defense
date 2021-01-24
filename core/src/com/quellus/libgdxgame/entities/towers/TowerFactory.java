@@ -4,7 +4,7 @@ import com.quellus.libgdxgame.entities.towers.TowerEnum;
 
 public class TowerFactory {
 
-  public static Tower newTower(TowerEnum type, int x, int y) {
+  public static Tower newTower(TowerEnum type, float x, float y) {
     switch(type) {
       case TURRET:
         return new TurretTower(x, y);

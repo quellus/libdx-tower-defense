@@ -14,6 +14,7 @@ public class Game {
 	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 
 	private int currency = 100;
+	private boolean isPaused = false;
 
 	private Map map;
 
@@ -71,6 +72,14 @@ public class Game {
 		} else {
 			currency -= spend;
 		}
+	}
+
+	public boolean getIsPaused() {
+		return isPaused;
+	}
+
+	public void setIsPaused(boolean isPaused) {
+		this.isPaused = isPaused;
 	}
 
 }
