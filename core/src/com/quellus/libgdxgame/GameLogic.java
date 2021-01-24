@@ -3,6 +3,7 @@ package com.quellus.libgdxgame;
 import java.util.ArrayList;
 
 import com.quellus.libgdxgame.Game;
+import com.quellus.libgdxgame.Waves;
 import com.quellus.libgdxgame.entities.towers.Tower;
 import com.quellus.libgdxgame.entities.towers.TowerEnum;
 import com.quellus.libgdxgame.entities.towers.TowerFactory;
@@ -14,13 +15,14 @@ import com.quellus.libgdxgame.entities.Entity;
 
 public class GameLogic {
 	private Game game;
+	private Waves waves = new Waves();
 	private int  enemySpawnRate = 30;
 	private int enemySpawn = enemySpawnRate;
+	private int enemiesSpawned = 0;
 
 	public GameLogic(Game game) {
 		this.game = game;
 		Coordinate<Integer>[] map = game.getMap();
-		game.addEnemy(new Enemy(map));
 	}
 	
 	public void update() {
@@ -60,6 +62,18 @@ public class GameLogic {
 	public void buyTower(Tower tower) {
 		int price = tower.getPrice();
 		game.spendCurrency(price);
+	}
+
+	public boolean isWaveEnd() {
+		boolean allEnemiesSpawned = waves.getNumEnemies() == enemiesSpawned;
+		boolean allEnemiesDead = game.getEnemies().size() == 0;
+		return allEnemiesSpawned && allEnemiesDead;
+	}
+
+	public void nextWave() {
+		enemiesSpawned = 0;
+		game.clearAllProjectiles();
+		waves.next();
 	}
 
 	private boolean isPathAt(int x, int y) {
@@ -163,12 +177,15 @@ public class GameLogic {
 	}
 
 	private void spawnEnemy() {
-		if (enemySpawn == 0) {
-			game.addEnemy(new Enemy(game.getMap()));
-			enemySpawn = enemySpawnRate;
-		} else {
-			enemySpawn--;
-		}
+		if (enemiesSpawned < waves.getNumEnemies()) {
+			if (enemySpawn == 0) {
+				game.addEnemy(new Enemy(game.getMap()));
+				enemySpawn = enemySpawnRate;
+				++enemiesSpawned;
+			} else {
+				enemySpawn--;
+			}
+		 }
 	}
 
 	private Enemy getClosestEnemyInRadius(Tower tower) {

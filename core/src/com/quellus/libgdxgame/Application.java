@@ -75,6 +75,11 @@ public class Application extends ApplicationAdapter {
 			input.noInput(x, y);
 		}
 
+		if (gameLogic.isWaveEnd()) {
+			gameLogic.togglePause();
+			gameLogic.nextWave();
+		}
+		
 		gameLogic.update();
 		gameRender.render(batch);
 
