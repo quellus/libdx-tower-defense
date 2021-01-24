@@ -35,7 +35,6 @@ public class Menu {
     for (int i = 0; i < menuButtons.length; i++) {
       MenuItem item = menuButtons[i];
       if (item.getLocationX() == x && item.getLocationY() == y) {
-        // TODO pause
         gameLogic.togglePause();
       }
 
