@@ -8,7 +8,7 @@ import com.quellus.libgdxgame.entities.projectiles.Projectile;
 
 public class TurretTower extends Tower {
 
-	public TurretTower(int x, int y) {
+	public TurretTower(float x, float y) {
 		super(x, y, 3.2f);
 		cooldown = 10;
 		type = TowerEnum.TURRET;

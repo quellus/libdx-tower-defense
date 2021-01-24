@@ -15,7 +15,7 @@ public class Input {
     this.menu = menu;
   }
 
-  public void handleInput(int x, int y) {
+  public void handleInput(float x, float y) {
     if (!isSelected) {
       isSelected = menu.select(x, y);
       isSelected = true;

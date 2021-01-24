@@ -23,7 +23,7 @@ public abstract class Entity {
 		return locationX;
 	}
 
-	public void setLocationX(int locationX) {
+	public void setLocationX(float locationX) {
 		this.locationX = locationX;
 	}
 
@@ -31,7 +31,7 @@ public abstract class Entity {
 		return locationY;
 	}
 
-	public void setLocationY(int locationY) {
+	public void setLocationY(float locationY) {
 		this.locationY = locationY;
 	}
 
@@ -39,7 +39,7 @@ public abstract class Entity {
 		return moveSpeed;
 	}
 
-	public void setMoveSpeed(int moveSpeed) {
+	public void setMoveSpeed(float moveSpeed) {
 		this.moveSpeed = moveSpeed;
 	}
 }
