@@ -17,6 +17,7 @@ public class Enemy extends Entity {
 	
 	private int health = 20;
 	private boolean isDead = false;
+	private boolean reachedEnd = false;
 
 	public Enemy(Coordinate<Integer>[] map) {
 		this.map = map;
@@ -27,15 +28,17 @@ public class Enemy extends Entity {
 	}
 
 	public void move() {
-		if (map.length == lastWaypoint + 1 && Math.abs(locationX - map[lastWaypoint].getX()) <= moveSpeed && Math.abs(locationY - map[lastWaypoint].getY()) <= moveSpeed) {
-			isDead = true;
-			return;
-		}
+		if (map.length >= lastWaypoint && Math.abs(locationX - map[lastWaypoint].getX()) <= moveSpeed && Math.abs(locationY - map[lastWaypoint].getY()) <= moveSpeed) {
+			if (map.length == lastWaypoint + 1 ) {
+				reachedEnd = true;
+				return;
+			}
 
-		if (map.length > lastWaypoint + 1 && Math.abs(locationX - map[lastWaypoint].getX()) <= moveSpeed && Math.abs(locationY - map[lastWaypoint].getY()) <= moveSpeed) {
-			locationX = map[lastWaypoint].getX();
-			locationY = map[lastWaypoint].getY();
-			lastWaypoint++;
+			if (map.length > lastWaypoint + 1) {
+				locationX = map[lastWaypoint].getX();
+				locationY = map[lastWaypoint].getY();
+				lastWaypoint++;
+			}
 		}
 
 		int targetX = map[lastWaypoint].getX();
@@ -46,6 +49,10 @@ public class Enemy extends Entity {
 
 	public boolean isDead() {
 		return isDead;
+	}
+
+	public boolean reachedEnd() {
+		return reachedEnd;
 	}
 
 	public float getMoveSpeed() {

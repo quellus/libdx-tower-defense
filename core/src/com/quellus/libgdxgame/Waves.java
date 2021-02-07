@@ -12,3 +12,4 @@ public class Waves {
     return numEnemies;
   }
 }
+

@@ -13,10 +13,11 @@ public class Game {
 	private ArrayList<Tower> towers = new ArrayList<Tower>();
 	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 
+	private Map map;
+	private int lives = 10;
 	private int currency = 100;
 	private boolean isPaused = true;
 
-	private Map map;
 
 	public Game(String filename) {
 		map = new Map(filename);
@@ -62,6 +63,14 @@ public class Game {
 		return map.getMapTiles();
 	}
 
+	public int getLives() {
+		return lives;
+	}
+
+	public void setLives(int lives) {
+		this.lives = lives;
+	}
+	
 	public int getCurrency() {
 		return currency;
 	}
