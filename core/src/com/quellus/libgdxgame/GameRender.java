@@ -48,6 +48,7 @@ public class GameRender {
     drawTowers(batch);
     drawProjectiles(batch);
     font.draw(batch, "" + game.getCurrency(), 300, 20);
+    font.draw(batch, "" + game.getLives(), 300, 40);
   }
 
   private void loadTextures() {

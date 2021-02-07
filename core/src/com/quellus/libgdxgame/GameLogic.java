@@ -26,7 +26,7 @@ public class GameLogic {
 	}
 	
 	public void update() {
-		if (!game.getIsPaused()) {
+		if (!game.getIsPaused() && game.getLives() > 0) {
 			spawnEnemy();
 			moveEnemies();
 			rotateAndAttackTowers();
@@ -74,6 +74,7 @@ public class GameLogic {
 		enemiesSpawned = 0;
 		game.clearAllProjectiles();
 		waves.next();
+		game.setLives(game.getLives()+1);
 	}
 
 	private boolean isPathAt(int x, int y) {
@@ -104,9 +105,12 @@ public class GameLogic {
 		ArrayList<Enemy> enemies = game.getEnemies();
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy enemyObj = enemies.get(i);
-			if (!enemyObj.isDead()) {
+			if (enemyObj.reachedEnd()) {
+				game.setLives(game.getLives() - 1);
+				game.removeEnemy(enemyObj);
+			} else if (!enemyObj.isDead()) {
 				enemyObj.move();
-			}	else {
+			} else {
 				game.addCurrency(1);
 				game.removeEnemy(enemyObj);
 			}
