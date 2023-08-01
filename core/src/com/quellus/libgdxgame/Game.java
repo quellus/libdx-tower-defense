@@ -15,7 +15,7 @@ public class Game {
 
 	private Map map;
 	private int lives = 10;
-	private int currency = 100;
+	private int currency = 50;
 	private boolean isPaused = true;
 
 
