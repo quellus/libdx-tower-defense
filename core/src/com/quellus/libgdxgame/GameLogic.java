@@ -183,7 +183,7 @@ public class GameLogic {
 	private void spawnEnemy() {
 		if (enemiesSpawned < waves.getNumEnemies()) {
 			if (enemySpawn == 0) {
-				game.addEnemy(new Enemy(game.getMap()));
+				game.addEnemy(new Enemy(game.getMap(), waves.getEnemyHealthFactor()));
 				enemySpawn = enemySpawnRate;
 				++enemiesSpawned;
 			} else {

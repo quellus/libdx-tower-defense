@@ -19,11 +19,12 @@ public class Enemy extends Entity {
 	private boolean isDead = false;
 	private boolean reachedEnd = false;
 
-	public Enemy(Coordinate<Integer>[] map) {
+	public Enemy(Coordinate<Integer>[] map, float healthFactor) {
 		this.map = map;
 		moveSpeed = 0.05f;
 		locationX = map[0].getX();
 		locationY = map[0].getY();
+		health = Math.round(health + healthFactor);
 		setRotation(LEFT);
 	}
 
