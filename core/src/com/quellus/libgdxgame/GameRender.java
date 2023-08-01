@@ -25,6 +25,7 @@ public class GameRender {
   private Texture towerTurretTexture;
   private Texture towerLauncherTexture;
   private Texture pauseTexture;
+  private Texture playTexture;
 
   private BitmapFont font;
 
@@ -61,6 +62,7 @@ public class GameRender {
     towerTurretTexture = new Texture("basic-tower.png");
     towerLauncherTexture = new Texture("launcher-tower.png");
     pauseTexture = new Texture("pause.png");
+    playTexture = new Texture("play.png");
   }
 
   private void drawMapTiles(SpriteBatch batch) {
@@ -154,6 +156,9 @@ public class GameRender {
     switch(menuButton.getType()) {
       case PAUSE:
         buttonTexture = pauseTexture;
+        if (game.getIsPaused()) {
+          buttonTexture = playTexture;
+        }
         break;
     }
 
