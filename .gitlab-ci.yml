@@ -25,6 +25,10 @@ stages:          # List of stages for jobs, and their order of execution
 deploy-desktop:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   environment: production
+  artifacts:
+    paths:
+      - desktop/build/libs/desktop-1.0.jar
+      - android/build/outputs/apk/debug/android-debug.apk
   script:
     - ./gradlew desktop:dist
     - ./gradlew android:assembleDebug
