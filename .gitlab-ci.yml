@@ -20,17 +20,12 @@ image:
   registry.gitlab.com/quellus/libgdx-tower-defense
 
 stages:          # List of stages for jobs, and their order of execution
-  - deploy-desktop
-  - deploy-android
+  - deploy
 
-deploy-desktop-job:      # This job runs in the deploy stage.
+deploy-desktop:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   environment: production
   script:
     - ./gradlew desktop:dist
-
-deploy-android-job:
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
-  script:
     - ./gradlew android:assembleDebug
+
